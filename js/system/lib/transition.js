@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'system/basic/entity', 'system/core/game', 'system/basic/morph'],
+define(['system/lib/scene', 'system/lib/entity', 'system/core/game', 'system/lib/morph'],
 		function(Scene, Entity, game, Morph) {
 
 			function TransitionScene(toScene, duration, easing) {

@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'system/geo/vector2', 'system/geo/rect', 'system/basic/morph'], function(Entity, Vector2, Rect, Morph) {
+define(['system/lib/entity', 'system/geo/vector2', 'system/geo/rect', 'system/lib/morph'], function(Entity, Vector2, Rect, Morph) {
 	function ViewPort(updateHidden) {
 		Entity.call(this);
 		this.updateHidden = updateHidden;

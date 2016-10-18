@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'game/entity/player', 'system/lib/map', 'system/lib/viewport', 'system/basic/rect', 'game/config/colors', 'system/geo/vector2'],
+define(['system/lib/scene', 'game/entity/player', 'system/lib/map', 'system/lib/viewport', 'system/entity/rect', 'game/config/colors', 'system/geo/vector2'],
 		function(Scene, Player, TiledMap, ViewPort, RectEntity, colors, Vector2 ) {
 			function PlayScene() {
 

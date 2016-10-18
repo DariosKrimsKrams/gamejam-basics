@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'system/geo/vector2', 'system/basic/text', 'system/basic/rect', 'system/basic/image'],
+define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system/entity/rect', 'system/entity/image'],
 		function(Entity, Vector2, TextEntity, RectEntity, ImageEntity) {
 			function Button(pos, callback) {
 				Entity.call(this, pos);
@@ -18,12 +18,12 @@ define(['system/basic/entity', 'system/geo/vector2', 'system/basic/text', 'syste
 				return new Button(pos, callback);
 			};
 
-			Button.prototype.text = function(text, font, w, h) {
+			Button.prototype.text = function(text, font, w, h, fontSize) {
 				this.size.x = Math.max(w||0, this.size.x);
 				this.size.y = Math.max(h||0, this.size.y);
 
 				var self = this;
-				var txt = new TextEntity(new Vector2(this.size.x/2, this.size.y/2), text, font);
+				var txt = new TextEntity(new Vector2(this.size.x/2, this.size.y/2), text, font, fontSize);
 
 				txt.hover = function() { return self.hover(); };
 				this.setText = function(s) { txt.text = s };

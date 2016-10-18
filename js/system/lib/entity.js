@@ -159,9 +159,34 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 		}
 	};
 
+	// obsolete -> better use setCenterX() and add()
 	Entity.prototype.center = function (obj) {
 		obj.position.x = this.size.x / 2 - obj.size.x / 2;
 		this.add(obj);
+	};
+
+	Entity.prototype.setLeft = function (obj) {
+		obj.position.x = 0;
+	};
+	
+	Entity.prototype.setCenterX = function (obj) {
+		obj.position.x = this.size.x / 2 - obj.size.x / 2;
+	};
+
+	Entity.prototype.setRight = function (obj) {
+		obj.position.x = this.size.x - obj.size.x;
+	};
+
+	Entity.prototype.setTop = function (obj) {
+		obj.position.y = 0;
+	};
+
+	Entity.prototype.setCenterY = function (obj) {
+		obj.position.y = this.size.y / 2 - obj.size.y / 2;
+	};
+
+	Entity.prototype.setBottom = function (obj) {
+		obj.position.y = this.size.y - obj.size.y;
 	};
 
 	return Entity;

@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'game/config/colors'],
+define(['system/lib/entity', 'game/config/colors'],
 	function(Entity, colors) {
 		function RectEntity(pos, size, color) {
 			Entity.call(this, pos, size);

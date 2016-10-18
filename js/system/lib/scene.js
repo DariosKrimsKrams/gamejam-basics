@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'system/geo/vector2', 'system/core/graphic', 'game/config/screen', 'game/config/config'],
+define(['system/lib/entity', 'system/geo/vector2', 'system/core/graphic', 'game/config/screen', 'game/config/config'],
 		function (Entity, Vector2, graphics, screen, config) {
 		    function Scene() {
 				Entity.call(this, Zero(), new Vector2(screen.w, screen.h));

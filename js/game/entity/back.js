@@ -1,4 +1,4 @@
-define(['require', 'system/basic/button', 'system/core/graphic', 'system/core/game', 'system/geo/vector2', 'system/transitions/slideinleft', 'system/definition/easing'],
+define(['require', 'system/entity/button', 'system/core/graphic', 'system/core/game', 'system/geo/vector2', 'system/transitions/slideinleft', 'system/definition/easing'],
 	function(require, Button, graphics, game, Vector2, SlideInLeftTransition, Easing) {
 		graphics.add('img/back.png');
 

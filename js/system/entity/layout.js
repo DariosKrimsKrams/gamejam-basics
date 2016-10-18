@@ -1,17 +1,18 @@
-define(['system/basic/entity'],
+define(['system/lib/entity'],
 		function(Entity) {
 			function Layout(pos, margin, spacing) {
 				Entity.call(this, pos);
-				this.margin = margin;
-				this.spacing = spacing;
+				this.margin = margin || 0;
+				this.spacing = spacing || 0;
 			}
 
 			Layout.prototype = new Entity();
 
 			Layout.prototype.adjustFixed = function(axis, entity) {
 				entity.position[axis] = this.margin;
-				if( this.size[axis] < entity.size[axis] + 2*this.margin )
-					this.size[axis] = entity.size[axis] + 2*this.margin;
+				var tmp = entity.size[axis] + 2 * this.margin;
+				if(this.size[axis] < tmp)
+					this.size[axis] = tmp;
 			};
 
 			Layout.prototype.adjustFlexible = function(axis, entity) {
@@ -37,8 +38,13 @@ define(['system/basic/entity'],
 				}
 			};
 
+			/*
+			 * Vector2 pos
+			 * int margin
+			 * int spacing
+			 */
 			function VerticalLayout(pos, margin, spacing) {
-				Layout.call(this ,pos, margin, spacing);
+				Layout.call(this, pos, margin, spacing);
 			}
 
 			VerticalLayout.prototype = new Layout();
@@ -61,6 +67,11 @@ define(['system/basic/entity'],
 				}
 			};
 
+			/*
+			 * Vector2 pos
+			 * int margin
+			 * int spacing
+			 */
 			function HorizontalLayout(pos, margin, spacing) {
 				Layout.call(this, pos, margin, spacing);
 			}

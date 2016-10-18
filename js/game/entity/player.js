@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'system/geo/vector2', 'game/config/colors', 'system/basic/rect', 'system/core/graphic', 'system/lib/animation'],
+define(['system/lib/entity', 'system/geo/vector2', 'game/config/colors', 'system/entity/rect', 'system/core/graphic', 'system/entity/animation'],
 	function(Entity, Vector2, colors, RectEntity, graphics, Animation) {
 		graphics.add('img/death.png');
 

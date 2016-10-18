@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'system/basic/button', 'system/core/game', 'system/geo/vector2', 'system/transitions/slideinright', 'system/basic/morph', 'system/definition/easing', 'system/basic/layout'],
+define(['system/lib/scene', 'system/entity/button', 'system/core/game', 'system/geo/vector2', 'system/transitions/slideinright', 'system/lib/morph', 'system/definition/easing', 'system/entity/layout'],
 	function(Scene, Button, game, Vector2, SlideInRightTransition, Morph, Easing, Layout) {
 		function MenuScene() {
 

@@ -1,6 +1,6 @@
 var onTileMapLoaded;
 
-define(['system/basic/entity', 'system/core/graphic', 'system/geo/vector2'],
+define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 		function(Entity, graphics, Vector2) {
 			function imagePath(url) {
 				return url.substr(url.indexOf("img/"));

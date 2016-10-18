@@ -1,4 +1,4 @@
-define(['system/basic/entity', 'system/geo/vector2', 'system/definition/random'],
+define(['system/lib/entity', 'system/geo/vector2', 'system/definition/random'],
 		function(Entity, Vector2, Random) {
 			function Particles(pos, config) {
 				Entity.call(this, pos);
