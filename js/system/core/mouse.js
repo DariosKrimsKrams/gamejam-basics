@@ -1,52 +1,81 @@
 define(['system/geo/vector2', 'system/core/game', 'game/config/config'], function(Vector2, game, config) {
 	var mouse = new Vector2( 0, 0 );
 
-	mouse.init = function() {
+	mouse.init = function () {
 		var self = this;
 		var gameframe = document.getElementById('gameframe');
+		var primaryTouchId = null;
+
+		var getPrimaryTouch = function (touches) {
+			for (var i = 0, j = touches.length; i < j; i++) {
+				if (touches[i].identifier == primaryTouchId) {
+					return touches[i];
+				}
+			}
+
+			return null;
+		};
 
 		gameframe.onmousemove = function (ev) {
 			self.x = ( ev.clientX - gameframe.offsetLeft ) / game.scale;
 			self.y = ( ev.clientY - gameframe.offsetTop ) / game.scale;
 		};
 
-		gameframe.onmousedown = function( ev ) {
-			if( game.scene.mousedown )
-				game.scene.mousedown( self );
+		gameframe.onclick = function (ev) {
+			if (game.scene.click)
+				game.scene.click(self);
 		};
 
-		gameframe.onmouseup = function( ev ) {
-			if( game.scene.click )
-				game.scene.click( self );
-			if( game.scene.mouseup )
-				game.scene.mouseup( self );
+		gameframe.onmousedown = function (ev) {
+			if (game.scene.mousedown)
+				game.scene.mousedown(self);
+		};
+
+		gameframe.onmouseup = function (ev) {
+			if (game.scene.mouseup)
+				game.scene.mouseup(self);
 		};
 
 		/* Support for mobile devices */
-		gameframe.ontouchstart = function( ev ) {
-			this.onmousemove( ev.changedTouches[0] );
-			this.onmousedown( ev.changedTouches[0] );
+		gameframe.ontouchstart = function (ev) {
 			ev.preventDefault();
+			if (primaryTouchId != null) return;
 
+			this.onmousemove(ev.touches[0]);
+			this.onmousedown(ev.touches[0]);
+			primaryTouchId = ev.changedTouches[0].identifier;
 		};
 
-		gameframe.ontouchmove = function( ev ) {
-			this.onmousemove( ev.changedTouches[0] );
+		gameframe.ontouchmove = function (ev) {
+			var touch = getPrimaryTouch(ev.touches);
 			ev.preventDefault();
+
+			if (touch == null) return;
+			this.onmousemove(touch);
 		};
 
-		gameframe.ontouchend = function( ev ) {
-			this.onmouseup( ev.changedTouches[0] );
+		gameframe.ontouchend = function (ev) {
+			var touch = getPrimaryTouch(ev.changedTouches);
+			ev.preventDefault();
+			if (touch == null) return;
+
+			this.onmouseup(touch);
+			this.onclick(touch);
+			primaryTouchId = null;
 
 			self.x = -1;
 			self.y = -1;
+		};
 
-			ev.preventDefault();
-		}
+		/* Support for mouse leaving the game */
+		gameframe.onmouseout = function (ev) {
+			gameframe.onmouseup(ev);
+		};
+
 	};
 
-	if(!config.debug)
-		document.addEventListener("contextmenu", function(e){
+	if (!config.debug)
+		document.addEventListener("contextmenu", function (e) {
 			e.preventDefault();
 		}, false);
 

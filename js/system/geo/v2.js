@@ -28,6 +28,15 @@ define(function() {
 	Vector2.prototype.clone = function() { return new Vector2( this.x, this.y ); };
 	Vector2.prototype.equal = function( v ) { return v.x == this.x && v.y == this.y };
 	Vector2.prototype.abs = function() { return new Vector2( Math.abs(this.x), Math.abs(this.y)); };
+	
+	V2.prototype.fromDeg = function (angle, length) {
+		this.fromRad(angle * ( Math.PI / 180 ), length);
+	};
+	
+	V2.prototype.fromRad = function (angle, length) {
+		this.x = Math.round(Math.sin(angle) * length);
+		this.y = -Math.round(Math.cos(angle) * length);
+	};
 
 	Zero = function() {
 		return new Vector2(0,0);
