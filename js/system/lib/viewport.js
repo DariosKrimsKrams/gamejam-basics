@@ -25,7 +25,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/geo/rect', 'system/li
 		for (var i = 0; i < list.length; i++)
 			if (list[i][event]) {
 
-				if(event == 'draw' && this.getVisibleArea().collision(list[i].relativeArea()))
+				if(event == 'draw' && this.getVisibleArea().collision(list[i].getRelativeArea()))
 					list[i].draw(argurment);
 				if(event == 'update' && (this.updateHidden || this.getVisibleArea().collision(list[i].relativeArea())))
 					list[i].update(argurment);

@@ -1,10 +1,11 @@
-define(['system/geo/vector2', 'system/core/game', 'game/config/config'], function(Vector2, game, config) {
+define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/core/game'], function(Vector2, game, config, game) {
 	var mouse = new Vector2( 0, 0 );
 
 	mouse.init = function () {
 		var self = this;
 		var gameframe = document.getElementById('gameframe');
 		var primaryTouchId = null;
+		var showCursor = false;
 
 		var getPrimaryTouch = function (touches) {
 			for (var i = 0, j = touches.length; i < j; i++) {
@@ -12,14 +13,59 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config'], functio
 					return touches[i];
 				}
 			}
-
 			return null;
 		};
 
 		gameframe.onmousemove = function (ev) {
 			self.x = ( ev.clientX - gameframe.offsetLeft ) / game.scale;
 			self.y = ( ev.clientY - gameframe.offsetTop ) / game.scale;
+			var result = checkCursorPointer();
+			setPointer(result);
 		};
+
+		// check for mouse over clickable object -> show cursor
+		var checkCursorPointer = function()
+		{
+			var result = false;
+			result = checkEntityVsMouse(game.scene);
+			if(result)
+				return true;
+			return loopEntities(game.scene);
+		}
+
+		// (1) get currently visible objects and get their entities
+		var loopEntities = function(obj)
+		{
+			var result = false;
+			for (var i = 0; i < obj.entities.length; i++) {
+				var entity = obj.entities[i];
+				if(!entity.visible)
+					continue;
+				result = checkEntityVsMouse(entity);
+				if(result)
+					return true;
+				result = loopEntities(entity);
+				if(result)
+					return true;
+			}
+			return result;
+		}
+
+		// (2) check entites has onClick method
+		var checkEntityVsMouse = function(obj) {
+
+			// check if obj has click method
+			if(obj.onClick != undefined)
+			{
+				// check size inside
+				if(obj.mouseInArea())
+				{
+					// flag as setPointer = true
+					return true;
+				}
+			}
+			return false;
+		}
 
 		gameframe.onclick = function (ev) {
 			if (game.scene.click)
@@ -71,6 +117,15 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config'], functio
 		gameframe.onmouseout = function (ev) {
 			gameframe.onmouseup(ev);
 		};
+
+		var setPointer = function(status) {
+			if(showCursor == status)
+				return;
+
+			var cursor = status ? "pointer" : "inherit";
+			showCursor = status;
+			this.gameframe.style.cursor = cursor;
+		}
 
 	};
 

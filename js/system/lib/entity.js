@@ -90,11 +90,12 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 	};
 
 	Entity.prototype.getArea = function () {
-		if (this.size.x == 0 && this.size.y == 0) this.inheritSize();
-		return new Rect(Zero(), this.size);
+		if (this.size.x == 0 && this.size.y == 0)
+			this.inheritSize();
+		return new Rect(Zero(), new Vector2(this.size.x * this.scale, this.size.y * this.scale));
 	};
 
-	Entity.prototype.relativeArea = function () {
+	Entity.prototype.getRelativeArea = function () {
 		return this.getArea().moved(this.position);
 	};
 
@@ -123,10 +124,19 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 		ctx.restore();
 	};
 
+	// used for mouse set cursor pointer -> check if mouse if inside this object
+	Entity.prototype.mouseInArea = function() {
+		var posTmp = this.relativeMouse();
+		return this.getArea().inside(posTmp);
+	}
+
 	Entity.prototype.click = function (pos) {
 		pos = pos.dif(this.position);
-		if (!this.getArea().inside(pos)) return;
-		if (this.onClick && this.onClick(pos)) return true;
+		
+		if (this.getArea().inside(pos) == false)
+			return;
+		if (this.onClick && this.onClick(pos))
+			return true;
 
 		if (this.blocking.length) {
 			return this.dispatchReverse(this.blocking, 'click', pos);
