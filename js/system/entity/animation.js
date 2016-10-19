@@ -9,6 +9,7 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 				this.anitime = 0;
 				this.frame = 0;
 				this.state = 0;
+				this.isAnimating = true;
 
 				Entity.call(this, pos, new Vector2(this.img.width / this.frames.x, this.img.height / this.frames.y ));
 			}
@@ -16,6 +17,9 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 			Animation.prototype = new Entity();
 
 			Animation.prototype.onUpdate = function(delta) {
+				if(!this.isAnimating)
+					return;
+
 				this.anitime += delta;
 				this.frame = Math.floor( this.anitime / this.duration );
 
