@@ -3,8 +3,9 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system
 			function Button(pos, callback) {
 				Entity.call(this, pos);
 				this.onClick = function(p) {
-					callback(p);
-					return true;
+					if(this.visible)
+						callback(p);
+					return this.visible;
 				}
 			}
 
