@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'game/entity/back', 'system/entity/particles', 'system/geo/v2', 'system/definition/random', 'system/entity/layout', 'system/entity/button', 'system/core/graphic'],
+define(['system/lib/scene', 'game/entity/back', 'system/entity/particles', 'system/geo/vector2', 'system/definition/random', 'system/entity/layout', 'system/entity/button', 'system/core/graphic'],
 		function(Scene, BackButton, Particles, Vector2, Radnom, Layout, Button, graphic) {
 			graphic.add('img/particles/ParticleFlare.png');
 			graphic.add('img/particles/ParticleCloudBlack.png');
