@@ -10,16 +10,17 @@ define(['system/lib/entity'],
 
 			Layout.prototype.adjustFixed = function(axis, entity) {
 				entity.position[axis] = this.margin;
-				var tmp = entity.size[axis] + 2 * this.margin;
+				var tmp = entity.size[axis] * entity.scale + (2 * this.margin);
 				if(this.size[axis] < tmp)
 					this.size[axis] = tmp;
 			};
 
 			Layout.prototype.adjustFlexible = function(axis, entity) {
 				var p = this.margin + this.entities.length * this.spacing;
-				for(var i in this.entities ) p += this.entities[i].size[axis] || 0;
+				for(var i in this.entities )
+					p += this.entities[i].size[axis] * this.entities[i].scale || 0;
 				entity.position[axis] = p;
-				this.size[axis] = entity.position[axis] + entity.size[axis] + this.margin;
+				this.size[axis] = entity.position[axis] + entity.size[axis] * entity.scale + this.margin;
 			};
 
 			Layout.prototype.align = function(orientation) {
