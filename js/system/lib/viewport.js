@@ -9,6 +9,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/geo/rect', 'system/li
 	}
 
 	ViewPort.prototype = new Entity();
+	ViewPort.prototype.constructor = ViewPort;
 
 	ViewPort.prototype.setParent = function(p) {
 		this.parent = p;

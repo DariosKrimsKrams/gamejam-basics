@@ -8,7 +8,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/definition/random'],
 					angle: Random.between(0, 360),
 					speed: 50,
 					lifetime: 2000,
-					scale: 1,
+					scale: new Vector2(1, 1),
 					offset: Zero(),
 					color: 'red',
 
@@ -30,6 +30,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/definition/random'],
 			}
 
 			Particles.prototype = new Entity();
+			Particles.prototype.constructor = Particles;
 
 			// do not bother to dispatch mouse events
 			Particles.prototype.click = function(pos) {};
@@ -103,7 +104,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/definition/random'],
 					ctx.drawImage(s, (this.position.x- s.width/2) | 0, (this.position.y- s.height/2) | 0);
 				} else {
 					ctx.fillStyle = this.config.color;
-					ctx.fillRect(this.position.x | 0, this.position.y | 0, this.config.scale, this.config.scale);
+					ctx.fillRect(this.position.x | 0, this.position.y | 0, this.config.scale.x, this.config.scale.y);
 				}
 			};
 

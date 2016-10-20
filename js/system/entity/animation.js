@@ -15,6 +15,7 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 			}
 
 			Animation.prototype = new Entity();
+			Animation.prototype.constructor = Animation;
 
 			Animation.prototype.onUpdate = function(delta) {
 				if(!this.isAnimating)
@@ -39,8 +40,8 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 					this.size.y,
 					0,
 					0,
-					this.size.x * this.scale,
-					this.size.y * this.scale
+					this.size.x * this.scale.x,
+					this.size.y * this.scale.y
 				);
 			};
 

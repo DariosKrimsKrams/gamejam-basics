@@ -10,6 +10,7 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 			}
 
 			PolyEntity.prototype = new Entity();
+			PolyEntity.prototype.constructor = PolyEntity;
 
 			PolyEntity.prototype.onDraw = function(ctx) {
 				this.color.apply(ctx, this.hover());

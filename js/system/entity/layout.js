@@ -7,10 +7,15 @@ define(['system/lib/entity'],
 			}
 
 			Layout.prototype = new Entity();
+			Layout.prototype.constructor = Layout;
 
 			Layout.prototype.adjustFixed = function(axis, entity) {
 				entity.position[axis] = this.margin;
-				var tmp = entity.size[axis] * entity.scale + (2 * this.margin);
+				var tmp;
+				if(axis == "x")
+					tmp = entity.size[axis] * entity.scale.x + (2 * this.margin);
+				else
+					tmp = entity.size[axis] * entity.scale.y + (2 * this.margin);
 				if(this.size[axis] < tmp)
 					this.size[axis] = tmp;
 			};
@@ -18,9 +23,18 @@ define(['system/lib/entity'],
 			Layout.prototype.adjustFlexible = function(axis, entity) {
 				var p = this.margin + this.entities.length * this.spacing;
 				for(var i in this.entities )
-					p += this.entities[i].size[axis] * this.entities[i].scale || 0;
+				{
+					if(axis == "x")
+						p += this.entities[i].size[axis] * this.entities[i].scale.x || 0;
+					else
+						p += this.entities[i].size[axis] * this.entities[i].scale.y || 0;
+					
+				}
 				entity.position[axis] = p;
-				this.size[axis] = entity.position[axis] + entity.size[axis] * entity.scale + this.margin;
+				if(axis == "x")
+					this.size[axis] = entity.position[axis] + entity.size[axis] * entity.scale.x + this.margin;
+				else
+					this.size[axis] = entity.position[axis] + entity.size[axis] * entity.scale.y + this.margin;
 			};
 
 			Layout.prototype.align = function(orientation) {
@@ -80,8 +94,8 @@ define(['system/lib/entity'],
 			HorizontalLayout.prototype = new Layout();
 
 			HorizontalLayout.prototype.add = function(e) {
-				this.adjustFixed('y', e);
-				this.adjustFlexible('x', e);
+				this.adjustFixed("y", e);
+				this.adjustFlexible("x", e);
 				Entity.prototype.add.call(this, e);
 			};
 

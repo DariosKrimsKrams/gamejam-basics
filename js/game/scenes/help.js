@@ -6,6 +6,7 @@ define(['system/lib/scene', 'game/entity/back'],
 			}
 
 			HelpScene.prototype = new Scene();
+			HelpScene.prototype.constructor = HelpScene;
 
 			return HelpScene;
 		}

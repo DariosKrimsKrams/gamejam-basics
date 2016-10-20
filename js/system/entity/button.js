@@ -10,6 +10,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system
 			}
 
 			Button.prototype = new Entity();
+			Button.prototype.constructor = Button;
 
 			Button.prototype.onMouseDown = function() {
 				return true;

@@ -9,6 +9,7 @@ define(['system/lib/scene', 'game/entity/back', 'system/entity/text', 'system/ge
 			}
 
 			CreditsScene.prototype = new Scene();
+			CreditsScene.prototype.constructor = CreditsScene;
 
 			return CreditsScene;
 		}

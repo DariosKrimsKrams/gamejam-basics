@@ -11,6 +11,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'game/config/colors', 'system
 		}
 
 		Player.prototype = new Entity();
+		Player.prototype.constructor = Player;
 
 		Player.prototype.onUpdate = function(delta) {
 			this.position.add(this.velocity.prd(delta/1000));

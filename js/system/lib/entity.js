@@ -1,11 +1,11 @@
-define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(Vector2, Rect, mouse) {
+define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/config/screen'], function(Vector2, Rect, mouse, ScreenConfig) {
     function Entity(pos, size) {
 
 		this.position = pos || Zero();
 		this.size = size || Zero();
 		this.rotation = 0;
 		this.pivot = Zero(); // between 0,0 and 1,1
-        this.scale = 1;
+        this.scale = new Vector2(1, 1);
 
 		this.entities = [];
 		this.blocking = [];
@@ -43,6 +43,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 
 	Entity.prototype.setParent = function (p) {
 		this.parent = p;
+	};
+
+	Entity.prototype.setToFullscreen = function (p) {
+		this.scale = new Vector2(ScreenConfig.w / this.size.x, ScreenConfig.h / this.size.y);
 	};
 
 	Entity.prototype.add = function (entity) {
@@ -92,7 +96,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 	Entity.prototype.getArea = function () {
 		if (this.size.x == 0 && this.size.y == 0)
 			this.inheritSize();
-		return new Rect(Zero(), new Vector2(this.size.x * this.scale, this.size.y * this.scale));
+		return new Rect(Zero(), new Vector2(this.size.x * this.scale.x, this.size.y * this.scale.y));
 	};
 
 	Entity.prototype.getRelativeArea = function () {
@@ -108,9 +112,9 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse'], function(
 	        return;
 		ctx.save();
 		ctx.translate(this.position.x | 0, this.position.y | 0);
-		ctx.translate(this.size.x * this.pivot.x * this.scale, this.size.y * this.pivot.y * this.scale);
+		ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
-		ctx.translate(-this.size.x * this.pivot.x * this.scale, -this.size.y * this.pivot.y * this.scale);
+		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y);
 
 		if (this.onDraw)
 		    this.onDraw(ctx);

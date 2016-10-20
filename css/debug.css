@@ -1,0 +1,42 @@
+ul {
+	list-style: none;
+}
+#debug {
+	background-color: #383838;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 220px;
+	height: 100%;
+	font: 13px Arial;
+	color: #BABCBD;
+}
+	#debug #debugContainer {
+		margin: 10px;
+	}
+		#debug #debugContainer div.layer {
+			padding-left: 14px;
+		}
+			#debug #debugContainer span.entry {
+				height: 16px;
+				line-height: 16px;
+				position: relative;
+			}
+				#debug #debugContainer span.entry div.infos {
+					display: none;
+					position: absolute;
+					left: 0;
+					top: 16px;
+					background-color: #565656;
+					width: 100px;
+					z-index: 20;
+					padding: 10px;
+				}
+				#debug #debugContainer span.entry:hover div.infos {
+					display: block;
+				}
+					#debug #debugContainer span.entry div.infos ul {
+					}
+					#debug #debugContainer span.entry div.infos ul li {
+						line-height: 16px;
+					}

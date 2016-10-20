@@ -6,6 +6,7 @@ define(['system/lib/entity', 'game/config/colors'],
 		}
 
 		RectEntity.prototype = new Entity();
+		RectEntity.prototype.constructor = RectEntity;
 
 		RectEntity.prototype.onDraw = function(ctx) {
 			this.color.apply(ctx, this.hover());

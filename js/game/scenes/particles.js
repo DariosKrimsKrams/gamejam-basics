@@ -15,7 +15,7 @@ define(['system/lib/scene', 'game/entity/back', 'system/entity/particles', 'syst
 						{time: 4500, amount: 40}],
 					interval: 5000,
 					rate: 25,
-					scale: 6,
+					scale: new Vector2(6, 6),
 					speed: Radnom.between(60,80),
 					autoplay: false,
 					loop: false
@@ -44,6 +44,7 @@ define(['system/lib/scene', 'game/entity/back', 'system/entity/particles', 'syst
 			}
 
 			ParticleScene.prototype = new Scene();
+			ParticleScene.prototype.constructor = ParticleScene;
 
 			return ParticleScene;
 		}

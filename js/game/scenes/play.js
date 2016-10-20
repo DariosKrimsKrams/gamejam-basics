@@ -21,6 +21,7 @@ define(['system/lib/scene', 'game/entity/player', 'system/lib/map', 'system/lib/
 			}
 
 			PlayScene.prototype = new Scene();
+			PlayScene.prototype.constructor = PlayScene;
 
 			return PlayScene;
 		}

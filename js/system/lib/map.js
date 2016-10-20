@@ -65,13 +65,14 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 				this.position = pos || Zero();
 				this.size = new Vector2(canvas.width, canvas.height);
 				this.img = canvas;
-				this.scale = 1;
+				this.scale = new Vector2(1, 1);
 			}
 
 			TiledLayer.prototype = new Entity();
+			TiledLayer.prototype.constructor = TiledLayer;
 
 			TiledLayer.prototype.onDraw = function(ctx) {
-				ctx.drawImage(this.img, 0, 0, this.size.x|0, this.size.y|0, 0, 0, (this.size.x*this.scale)|0, (this.size.y*this.scale)|0);
+				ctx.drawImage(this.img, 0, 0, this.size.x|0, this.size.y|0, 0, 0, (this.size.x*this.scale.x)|0, (this.size.y*this.scale.y)|0);
 			};
 
 			function TiledMap(name) {

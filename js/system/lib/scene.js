@@ -7,6 +7,7 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/core/graphic', 'game/
 			}
 
 			Scene.prototype = new Entity();
+			Scene.prototype.constructor = Scene;
 
 			Scene.prototype.onDraw = function (ctx) {
 				if (config.debug) {

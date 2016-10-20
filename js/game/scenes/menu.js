@@ -24,6 +24,7 @@ define(['system/lib/scene', 'system/entity/button', 'system/core/game', 'system/
 		}
 
 		MenuScene.prototype = new Scene();
+		MenuScene.prototype.constructor = MenuScene;
 
 		return MenuScene;
 	}
