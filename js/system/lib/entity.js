@@ -61,6 +61,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			return mouse.dif(this.position);
 	};
 
+	Entity.prototype.getCenterPoint = function (entity) {
+		return new Vector2(this.position.x + this.size.x / 2, this.position.y + this.size.y / 2);
+	};
+
 	Entity.prototype.block = function (entity) {
 		this.blocking.push(entity);
 	};
