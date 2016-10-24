@@ -1,5 +1,5 @@
-define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system/entity/rect', 'system/entity/image'],
-		function(Entity, Vector2, TextEntity, RectEntity, ImageEntity) {
+define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system/entity/rect', 'system/entity/image', 'system/entity/poly'],
+		function(Entity, Vector2, TextEntity, RectEntity, ImageEntity, PolyEntity) {
 			function Button(pos, callback) {
 				Entity.call(this, pos);
 				this.onClick = function(p) {
@@ -51,6 +51,19 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system
 				this.size.x = Math.max(w, this.size.x);
 				this.size.y = Math.max(h, this.size.y);
 				this.add(rect);
+				return this;
+			};
+
+			Button.prototype.poly = function(vector_list, color) {
+				var self = this;
+				var poly = new PolyEntity(Zero(), vector_list, color);
+
+				poly.hover = function() { return self.hover(); };
+
+				this.size.x = Math.max(poly.size.x, this.size.x);
+				this.size.y = Math.max(poly.size.y, this.size.y);
+
+				this.add(poly);
 				return this;
 			};
 
