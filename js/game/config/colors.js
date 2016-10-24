@@ -1,6 +1,6 @@
-define(['system/definition/colors'], function(Colors) {
+define(['system/definition/color'], function(Color) {
 	return {
-		default: new Colors('#000', '#FFF', '#555', '#DDD'),
-		player: new Colors('red', 'orange')
+		default: new Color('#000', '#FFF', '#555', '#DDD'),
+		player: new Color('red', 'orange')
 	};
 });
