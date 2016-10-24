@@ -33,7 +33,8 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 				ctx.fill();
 				ctx.stroke();
 
-				if (config.debug) { // draws the surrounding rectangle of the polygon and the entity's position (red dot)
+				// draws the surrounding rectangle of the polygon and the entity's position (red dot)
+				if (config.debug) {
 					var offset = this.poly.getOffset();
 					ctx.strokeRect(offset.x, offset.y, this.size.x, this.size.y);
 					ctx.fillStyle = '#ff0000';
@@ -45,12 +46,14 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 				return this.poly.inside(this.relativeMouse());
 			};
 
-// Ensures that the entity's position is equal to the the polygon surrounding rectangle's upper left corner
-// ### Will move the entity!
+			// Ensures that the entity's 1st position is equal to the the polygon surrounding rectangle's upper left corner
+			// ### Will move the entity!
 			PolyEntity.prototype.clearOffset = function() {
 				var offset = this.poly.getOffset();
 				this.poly.move(offset.inverse());
 				this.position.add(offset);
 			};
+
+			return PolyEntity;
 		}
 );
