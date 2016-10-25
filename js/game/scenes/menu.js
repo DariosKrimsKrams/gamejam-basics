@@ -2,7 +2,7 @@ define(['system/lib/scene', 'system/entity/button', 'system/core/game', 'system/
 	function(Scene, Button, game, Vector2, SlideInRightTransition, Morph, Easing, Layout) {
 		function MenuScene() {
 
-			var playButton = Button.create(new Vector2(0, 680), function() { game.scene = require('game/config/scenes').play; }).rect(280, 80).text("Play");
+			var playButton = Button.create(new Vector2(0, 680), function() { game.scene = require('game/config/scenes').play; }).rect(280, 80).text("Play".toLocaleString());
 			var creditsButton = Button.create(new Vector2(0, 680), function() { game.scene = new SlideInRightTransition(require('game/config/scenes').credits, 1000, Easing.OUTQUAD); }).rect(360, 80).text("Credits");
 			var helpButton = Button.create(new Vector2(0, 680), function() { game.scene = require('game/config/scenes').help; }).rect(300, 80).text("Help");
 			var particlesButton = Button.create(new Vector2(0, 680), function() { game.scene = require('game/config/scenes').particles; }).rect(300, 80).text("Particles");
