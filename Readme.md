@@ -1,4 +1,10 @@
-# Gamejam Basics
+# ![HTML5 Basics](http://www.game-codi.ng/media/html5-basics/html5_basics.png)
+
+> Simple Codebase to develop HTML5 Games
+
+### [Website coming soon](http://game-codi.ng)
+
+HTML5 Basics is a lightweight js framework for developing games. It's built up to work similar to Unity 3D engine.
 
 Feature:
 
@@ -15,10 +21,26 @@ To-do liste:
 * Anchoring
 * Particles
 
+
+## Team
+
+This project would not be possible without a strong team of [contributors](https://github.com/DarioDomiDE/gamejam-basics/contributors) helping push the project forward each day. In addition, we have a core project team composed of:
+
+#### [Tobias Rojahn](https://github.com/MasterIV) - Developer
+
+<img align="left" width="40" height="40" src="https://avatars3.githubusercontent.com/u/1334077?v=3&s=40">
+  Build in some bugs for Dario.
+
+#### [Dario D. Müller](http://github.com/DarioDomiDE) - Developer
+
+<img align="left" width="40" height="40" src="https://avatars0.githubusercontent.com/u/2358139?v=3&s=40">
+  Breaks everything, too.
+
+
 ## Getting started
 
 When you check out the project you can already open the index.html and you will find a very basic example. 
-The example includes four [scenes](https://github.com/MasterIV/gamejam-basics/tree/master/js/scenes): 
+The example includes four [scenes](https://github.com/DarioDomiDE/gamejam-basics/tree/master/js/system/scenes): 
 menu, credits, help and play.
 The first three of them are basically only UI, in the play scene you have some examples how components
 could be used.
@@ -191,3 +213,8 @@ viewport.scrollTo(new V2(-200,-200), 3000, function() {
 });
 ```
 
+#### Localization
+
+Manage your loca in the .json files in "loca" folder.
+* Use it like: "This is your string".toLocaleString(); 
+* to set another language: String.locale = "en";
