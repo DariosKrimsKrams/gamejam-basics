@@ -46,6 +46,20 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 				}
 			};
 
+			PolyEntity.CreateRounded = function(pos, width, height, roundedLeftTop, roundedRightTop, roundedRightBottom, roundedLeftBottom, color) {
+				var vectorList = [
+									new Vector2(0, roundedLeftTop),
+									new Vector2(roundedLeftTop, 0),
+									new Vector2(width - roundedRightTop, 0),
+									new Vector2(width, roundedRightTop),
+									new Vector2(width, height - roundedRightBottom),
+									new Vector2(width - roundedRightBottom, height),
+									new Vector2(roundedLeftBottom, height),
+									new Vector2(0, height - roundedLeftBottom)
+								];
+				return new PolyEntity(pos, vectorList, color);
+			};
+
 			PolyEntity.prototype.hover = function() {
 				return this.poly.inside(this.relativeMouse());
 			};
