@@ -3,6 +3,8 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 			function PolyEntity(pos, vector_list, color) {
 				this.color = color || colors.default;
 				this.poly = new Poly(vector_list);
+				this.isFill = true;
+				this.isStroke = true;
 
 				// Be careful that a rectangle of 0, 0, size.x, size.y does not surround the polygon!
 				// See PolyEntity.clearOffset()
@@ -30,8 +32,10 @@ define(['system/lib/entity', 'system/geo/poly', 'game/config/colors', 'system/ge
 
 				ctx.closePath();
 
-				ctx.fill();
-				ctx.stroke();
+				if(this.isFill)
+					ctx.fill();
+				if(this.isStroke)
+					ctx.stroke();
 
 				// draws the surrounding rectangle of the polygon and the entity's position (red dot)
 				if (config.debug) {
