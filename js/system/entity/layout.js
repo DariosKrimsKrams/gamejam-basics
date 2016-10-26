@@ -63,6 +63,7 @@ define(['system/lib/entity'],
 			}
 
 			VerticalLayout.prototype = new Layout();
+			VerticalLayout.prototype.constructor = VerticalLayout;
 
 			VerticalLayout.prototype.add = function(e) {
 				this.adjustFixed('x', e);
@@ -92,6 +93,7 @@ define(['system/lib/entity'],
 			}
 
 			HorizontalLayout.prototype = new Layout();
+			HorizontalLayout.prototype.constructor = HorizontalLayout;
 
 			HorizontalLayout.prototype.add = function(e) {
 				this.adjustFixed("y", e);
