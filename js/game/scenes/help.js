@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'game/entity/back'],
+define(['system/entity/scene', 'game/entity/back'],
 		function(Scene, BackButton) {
 
 			function HelpScene() {

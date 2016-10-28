@@ -28,14 +28,10 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 			resize: function() {
 
-				//if(screen.scaleToFullscreen)
 				if(screen.currentScaleType == ScaleType.TO_FULLSCREEN || screen.currentScaleType == ScaleType.WITH_ROTATION) {
 					this.updateScale();
 				}
 				else if(screen.currentScaleType == ScaleType.SAME_ASPECT_RATIO) {
-					//screen.w = screen.wViewport;
-					//screen.h = screen.hViewport;
-
 
 					var fw = window.innerWidth / screen.w;
 					var fh = window.innerHeight / screen.h;
@@ -59,9 +55,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 					this.scale = new Vector2(1, 1);
 				} else if(screen.currentScaleType == ScaleType.TO_FULLSCREEN || screen.currentScaleType == ScaleType.WITH_ROTATION) {
 
-					//var fw = window.innerWidth / screen.wViewport;
-					//var fh = window.innerHeight / screen.hViewport;
-
 				}
 
 			},
@@ -73,29 +66,21 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 					
 				this.display = document.getElementById('gameframe');
 				this.displayCtx = this.display.getContext('2d');
-				//this.gameDom = this.display.parentNode;
-
 
 				this.scene = scene;
 
 				this.buffer = document.createElement('canvas');
 				this.bufferCtx = this.buffer.getContext('2d');
-				//this.buffer.width = screen.w;
-				//this.buffer.height = screen.h;
 
 				if(screen.currentScaleType != ScaleType.NONE) {
-				//if(screen.scale)  {
 					this.resize();
 				} else {
-					//screen.w = screen.wViewport;
-					//screen.h = screen.hViewport;
 					this.onUpdateScreenSizes();
 				}
 
 				var self = this;
 				if( config.debug )
 					setInterval( function() { self.updateFramerate(); }, 1000 );
-				//if( screen.scale )
 				if(screen.currentScaleType != ScaleType.NONE)
 					window.onresize = function() { self.resize(); };
 
@@ -136,7 +121,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 				this.scene.draw( this.bufferCtx );
 
-				//this.display.width = this.display.width;
 				this.displayCtx.drawImage( this.buffer, 0, 0, this.buffer.width, this.buffer.height );
 
 				if( config.debug ) {
@@ -151,7 +135,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				var height = window.innerHeight;
 
 				if(screen.currentScaleType == ScaleType.WITH_ROTATION && this.currentlyPortrait) {
-				//if(screen.rotateOnPortait) {
 					var tmpWidth = width;
 					width = height;
 					height = tmpWidth;
@@ -161,7 +144,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				{
 					// check ascept radio -> Portrait or Landscape
 					if(screen.currentScaleType == ScaleType.WITH_ROTATION) {
-					//if(screen.rotateOnPortait) {
 						if(width < height && !this.currentlyPortrait) {
 
 							this.currentlyPortrait = true;
@@ -182,13 +164,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 						var pivot = height / 2;
 						this.display.style.transformOrigin = pivot + "px "+pivot+"px 0";
 					}
-
-					// set new screen sizes - if portrait change width & height
-					//screen.w = width;
-					//screen.h = height;
-
-					//screen.w = screen.wViewport;
-					//screen.h = screen.hViewport;
 
 					var fw = width / screen.w;
 					var fh = height / screen.h;

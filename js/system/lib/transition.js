@@ -1,4 +1,4 @@
-define(['system/lib/scene', 'system/lib/entity', 'system/core/game', 'system/lib/morph'],
+define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/lib/morph'],
 		function(Scene, Entity, game, Morph) {
 
 			function TransitionScene(toScene, duration, easing) {
@@ -6,6 +6,9 @@ define(['system/lib/scene', 'system/lib/entity', 'system/core/game', 'system/lib
 				
 				if(game.scene) this.add(this.fromScene = game.scene);
 				if(toScene) this.add(this.toScene = toScene);
+
+				this.size.x = window.innerWidth;
+				this.size.y = window.innerHeight;
 								
 				this.fromBuffer = this.createBuffer();
 				this.toBuffer = this.createBuffer();

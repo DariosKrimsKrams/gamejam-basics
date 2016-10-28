@@ -230,14 +230,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	// obsolete -> better use setCenterX() and add()
 	Entity.prototype.center = function (obj) {
 
-		var size = this.size;
-		if(this.EntityType == "Scene" && size.x == 0 && size.y == 0)
-		{
-			//console.log("change");
-			size.x = ScreenConfig.wViewport;
-			size.y = ScreenConfig.hViewport;
-		}
-		obj.position.x = size.x / 2 - obj.size.x / 2;
+		obj.position.x = this.size.x / 2 - obj.size.x / 2;
 
 		this.add(obj);
 	};

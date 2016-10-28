@@ -14,14 +14,11 @@ define([
 			) {
 
 		    function Scene() {
-				Entity.call(this, Zero(), new Vector2(screen.w, screen.h));
+				Entity.call(this, Zero(), new Vector2(screen.wViewport, screen.hViewport));
 				this.keyAware = [];
 			    this.bgColor = "#DDD";
 				this.EntityType = "Scene";
 				this.background;
-				//this.size = new Vector2(screen.w, screen.h);
-				//console.log(screen.w);
-
 			}
 
 			Scene.prototype = new Entity();
