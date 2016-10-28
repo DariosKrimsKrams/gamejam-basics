@@ -1,9 +1,27 @@
-define(['system/lib/entity', 'system/geo/vector2', 'system/core/graphic', 'game/config/screen', 'game/config/config'],
-		function (Entity, Vector2, graphics, screen, config) {
+define([
+	'system/lib/entity',
+	'system/geo/vector2',
+	'system/core/graphic',
+	'game/config/screen',
+	'game/config/config',
+	],
+		function (
+			Entity,
+			Vector2,
+			graphics,
+			screen,
+			config
+			) {
+
 		    function Scene() {
 				Entity.call(this, Zero(), new Vector2(screen.w, screen.h));
 				this.keyAware = [];
 			    this.bgColor = "#DDD";
+				this.EntityType = "Scene";
+				this.background;
+				//this.size = new Vector2(screen.w, screen.h);
+				//console.log(screen.w);
+
 			}
 
 			Scene.prototype = new Entity();

@@ -1,4 +1,12 @@
-define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/config/screen'], function(Vector2, Rect, mouse, ScreenConfig) {
+define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/config/screen', 'system/core/game'], function(Vector2, Rect, mouse, ScreenConfig, game) {
+	
+	/*const EntityType = {
+		None: '',
+		Image: '',
+		Scene: '',
+		Background: '',
+	}*/
+
     function Entity(pos, size) {
 
 		this.position = pos || Zero();
@@ -11,6 +19,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.blocking = [];
 		this.parent = null;
 		this.visible = true;
+		this.EntityType = "None";
 	}
 
 	Entity.prototype.setSize = function (w, h) {
@@ -46,7 +55,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	};
 
 	Entity.prototype.setToFullscreen = function (p) {
-		this.scale = new Vector2(ScreenConfig.w / this.size.x, ScreenConfig.h / this.size.y);
+		this.scale = new Vector2(ScreenConfig.w * game.scaleInternal.x / this.size.x, ScreenConfig.h * game.scaleInternal.y / this.size.y);
 	};
 
 	Entity.prototype.add = function (entity) {
@@ -83,7 +92,8 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.dispatchReverse = function (list, event, argurment) {
 		for (var i = list.length-1; i >= 0; i--)
 			if (list[i][event])
-				if( list[i][event](argurment)) return true;
+				if(list[i][event](argurment))
+					return true;
 	};
 
 	Entity.prototype.update = function (delta) {
@@ -111,15 +121,54 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		return this.getArea().inside(this.relativeMouse());
 	};
 
+	var isFirstLayer = function() {
+
+	}
+
 	Entity.prototype.draw = function (ctx) {
 	    if (!this.visible)
 	        return;
 		ctx.save();
 		ctx.translate(this.position.x | 0, this.position.y | 0);
+
+
+		// 
+		var x = (ScreenConfig.w - ScreenConfig.wViewport) / 2;
+		var y = (ScreenConfig.h - ScreenConfig.hViewport) / 2;
+
+		if(this.EntityType == "Scene" || this.EntityType == "Background") {
+
+			var scaleX = game.scaleInternal.x;
+			var scaleY = game.scaleInternal.y;
+
+			var scale = Math.min(scaleX, scaleY);
+			var addPosX = 0;
+			var addPosY = 0;
+
+			// get additional Position offset
+			if(scaleY < scaleX) {
+				addPosX = x + (ScreenConfig.wViewport * scaleX - (ScreenConfig.wViewport * scaleY)) / 2;
+			} else {
+				addPosY = y + (ScreenConfig.hViewport * scaleY - (ScreenConfig.hViewport * scaleX)) / 2;
+			}
+			game.offset.x = addPosX;
+			game.offset.y = addPosY;
+
+			if(this.EntityType == "Scene") {
+				ctx.translate(addPosX, addPosY);
+				ctx.scale(scale, scale);
+			} else /*if(this.EntityType == "Background")*/ {
+				ctx.scale(1 / scale, 1 / scale);
+				ctx.translate(-addPosX, -addPosY);
+			}
+		}
+
+
 		ctx.translate(this.size.x * this.pivot.x, this.size.y * this.pivot.y);
 		ctx.translate(this.scale.x, this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
-		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y);
+		ctx.translate(-this.scale.x, -this.scale.y);
+		ctx.translate(-this.size.x * this.pivot.x, -this.size.y * this.pivot.y );
 
 		if (this.onDraw)
 		    this.onDraw(ctx);
@@ -180,7 +229,16 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 
 	// obsolete -> better use setCenterX() and add()
 	Entity.prototype.center = function (obj) {
-		obj.position.x = this.size.x / 2 - obj.size.x / 2;
+
+		var size = this.size;
+		if(this.EntityType == "Scene" && size.x == 0 && size.y == 0)
+		{
+			//console.log("change");
+			size.x = ScreenConfig.wViewport;
+			size.y = ScreenConfig.hViewport;
+		}
+		obj.position.x = size.x / 2 - obj.size.x / 2;
+
 		this.add(obj);
 	};
 

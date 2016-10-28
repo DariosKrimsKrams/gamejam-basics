@@ -17,8 +17,9 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		};
 
 		gameframe.onmousemove = function (ev) {
-			self.x = ( ev.clientX - gameframe.offsetLeft ) / game.scale;
-			self.y = ( ev.clientY - gameframe.offsetTop ) / game.scale;
+			self.x = (ev.clientX - game.offset.x - gameframe.offsetLeft ) / game.scale.x;
+			self.y = (ev.clientY - game.offset.y - gameframe.offsetTop ) / game.scale.y;
+
 			var result = checkCursorPointer();
 			setPointer(result);
 		};
@@ -121,7 +122,7 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		var setPointer = function(status) {
 			if(showCursor == status)
 				return;
-
+			
 			var cursor = status ? "pointer" : "inherit";
 			showCursor = status;
 			this.gameframe.style.cursor = cursor;

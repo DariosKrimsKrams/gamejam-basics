@@ -1,25 +1,26 @@
 define( function() {
 	return {
+		
 		sampels: [],
-				urls: [],
+		urls: [],
 
-			play: function( file ) {
-		var self = this;
+		play: function( file ) {
+			var self = this;
 
-		if( !this.sampels[file] )
-			this.sampels[file] = [];
+			if( !this.sampels[file] )
+				this.sampels[file] = [];
 
-		if( this.sampels[file].length ) {
-			var sample = this.sampels[file].pop();
-			sample.play();
-			return sample;
-		} else {
-			var sample = new Audio( file );
-			sample.onended = function() { self.sampels[file].push( this ); };
-			sample.play();
-			return sample;
-		}
-	},
+			if( this.sampels[file].length ) {
+				var sample = this.sampels[file].pop();
+				sample.play();
+				return sample;
+			} else {
+				var sample = new Audio( file );
+				sample.onended = function() { self.sampels[file].push( this ); };
+				sample.play();
+				return sample;
+			}
+		},
 
 		add: function(url) {
 			this.urls.push(url);

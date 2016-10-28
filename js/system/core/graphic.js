@@ -3,6 +3,7 @@ define(function() {
 		urls: [],
 
 		add: function( url ) {
+			// TODO check ! urls contains url
 			this.urls.push( url );
 		},
 
@@ -10,7 +11,8 @@ define(function() {
 			var total = 0, loaded = 0;
 
 			function complete() {
-				if( ++loaded >= total ) callback();
+				if( ++loaded >= total )
+					callback();
 			}
 
 			while( this.urls.length ) {
@@ -23,7 +25,8 @@ define(function() {
 				}
 			}
 
-			if( total == 0 ) callback();
+			if(total == 0)
+				callback();
 		}
 	};
 });

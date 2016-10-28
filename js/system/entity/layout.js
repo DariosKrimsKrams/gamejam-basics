@@ -28,7 +28,6 @@ define(['system/lib/entity'],
 						p += this.entities[i].size[axis] * this.entities[i].scale.x || 0;
 					else
 						p += this.entities[i].size[axis] * this.entities[i].scale.y || 0;
-					
 				}
 				entity.position[axis] = p;
 				if(axis == "x")

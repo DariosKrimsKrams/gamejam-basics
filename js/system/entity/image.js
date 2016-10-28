@@ -10,6 +10,8 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity'],
 			ImageEntity.prototype.constructor = ImageEntity;
 
 			ImageEntity.prototype.onDraw = function(ctx) {
+
+
 				if(this.size.x >= 1 && this.size.y >= 1)
 					ctx.drawImage(
 						this.img,

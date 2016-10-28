@@ -1,3 +1,3 @@
 define({
-	debug: true
+	debug: false
 });
