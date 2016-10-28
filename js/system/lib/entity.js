@@ -167,8 +167,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		ctx.translate(this.size.x * this.pivot.x, this.size.y * this.pivot.y);
 		ctx.translate(this.scale.x, this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
-		ctx.translate(-this.scale.x, -this.scale.y);
-		ctx.translate(-this.size.x * this.pivot.x, -this.size.y * this.pivot.y );
+		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );
 
 		if (this.onDraw)
 		    this.onDraw(ctx);
