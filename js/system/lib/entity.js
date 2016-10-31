@@ -54,8 +54,41 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.parent = p;
 	};
 
-	Entity.prototype.setToFullscreen = function (p) {
+	// scale to fullscreen with distortion / Verzerrung
+	Entity.prototype.setToFullscreenDistort = function (p) {
 		this.scale = new Vector2(ScreenConfig.w * game.scaleInternal.x / this.size.x, ScreenConfig.h * game.scaleInternal.y / this.size.y);
+	};
+
+	// setToFullscreen to CutOff
+	Entity.prototype.setToFullscreenCutOff = function (p) {
+
+		var scaleX = ScreenConfig.w * game.scaleInternal.x / this.size.x;
+		var scaleY = ScreenConfig.h * game.scaleInternal.y / this.size.y;
+		var max = Math.max(scaleX, scaleY);
+
+		var imgWidth = this.size.x * max;
+		var realWidth = ScreenConfig.w * game.scaleInternal.x;
+
+		if(this.size.y * max > ScreenConfig.h * game.scaleInternal.y)
+		{
+			//console.log("more X than Y -> move top");
+			var imgHeight = this.size.y * max;
+			var realHeight = ScreenConfig.h * game.scaleInternal.y;
+			var imgTop = (imgHeight - realHeight) / 2 / game.scale.y;
+			this.position.y = -imgTop;
+		}
+		if(this.size.x * max > ScreenConfig.w * game.scaleInternal.x)
+		{
+			//console.log("more Y than X -> move left");
+			var imgWidth = this.size.x * max;
+			var realWidth = ScreenConfig.w * game.scaleInternal.x;
+			var imgLeft = (imgWidth - realWidth) / 2 / game.scale.x;
+			//this.position.x = -imgLeft;
+			this.position.x = -imgLeft;
+		}
+
+		this.scale = new Vector2(max, max);
+
 	};
 
 	Entity.prototype.add = function (entity) {

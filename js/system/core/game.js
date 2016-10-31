@@ -194,7 +194,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 				// update background
 				if(this.scene.background != undefined)
-					this.scene.background.setToFullscreen();
+					this.scene.background.setToFullscreenCutOff();
 
 			}
 
