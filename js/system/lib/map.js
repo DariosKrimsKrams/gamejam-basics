@@ -121,7 +121,9 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 			};
 
 			TiledMap.prototype.toTile = function(pos) {
-				return pos.clone().grid(this.tile.x, this.tile.y);
+				var result = pos.clone();
+				result.grid(this.tile.x, this.tile.y);
+				return result;
 			};
 
 			TiledMap.prototype.getLayer = function(name) {
@@ -132,16 +134,30 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 			};
 
 			TiledMap.prototype.blocked = function(pos) {
-				if( pos.x < 0 || pos.y < 0 || pos.x >= this.width || pos.y >= this.height )
-					return true;
+				return this.has(pos, 'collision', true);
+			};
 
+			TiledMap.prototype.has = function(pos, property, def) {
+				if( pos.x < 0 || pos.y < 0 || pos.x >= this.width || pos.y >= this.height )
+					return def;
+
+				var flags = this.flags(pos);
+				return flags[property];
+			};
+
+			TiledMap.prototype.flags = function(pos) {
+				if( pos.x < 0 || pos.y < 0 || pos.x >= this.width || pos.y >= this.height )
+					return {};
+
+				var result = {};
 				for(var i in this.layers) {
 					var l = this.layers[i];
-					if(l.collision && l.data && l.data[pos.x + (pos.y * l.width)])
-						return true;
+					if(l.data && l.data[pos.x + (pos.y * l.width)])
+						for(var p in l.properties)
+							if(!result[p]) result[p] = l.properties[p];
 				}
 
-				return false;
+				return result;
 			};
 
 			// is this needed? i don't know
