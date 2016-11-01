@@ -17,8 +17,21 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		};
 
 		gameframe.onmousemove = function (ev) {
-			self.x = (ev.clientX - game.offset.x - gameframe.offsetLeft ) / game.scale.x;
-			self.y = (ev.clientY - game.offset.y - gameframe.offsetTop ) / game.scale.y;
+
+			var mouseX = ev.clientX;
+			var mouseY = ev.clientY;
+			var scale = 1;
+
+			// check if portrait mode
+			if(game.currentlyPortrait)
+			{
+				mouseX = ev.clientY;
+				mouseY = gameframe.height - ev.clientX;
+				scale = Math.min(game.scaleInternal.x, game.scaleInternal.y);
+			}
+
+			self.x = (mouseX - game.offset.x - gameframe.offsetLeft ) / game.scale.x / scale;
+			self.y = (mouseY - game.offset.y - gameframe.offsetTop ) / game.scale.y / scale;
 
 			var result = checkCursorPointer();
 			setPointer(result);
