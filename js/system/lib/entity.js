@@ -12,7 +12,8 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.position = pos || Zero();
 		this.size = size || Zero();
 		this.rotation = 0;
-		this.pivot = Zero(); // between 0,0 and 1,1
+		this.pivot = Zero(); //for rotation -> between 0,0 and 1,1
+		this.pivotPosition = Zero(); // between 0,0 and 1,1
         this.scale = new Vector2(1, 1);
 
 		this.entities = [];
@@ -143,7 +144,9 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.getArea = function () {
 		if (this.size.x == 0 && this.size.y == 0)
 			this.inheritSize();
-		return new Rect(Zero(), new Vector2(this.size.x * this.scale.x, this.size.y * this.scale.y));
+		var left = -this.pivotPosition.x * this.size.x * this.scale.x;
+		var top = -this.pivotPosition.y * this.size.y * this.scale.y;
+		return new Rect(new Vector2(left, top), new Vector2(this.size.x * this.scale.x + left, this.size.y * this.scale.y +top));
 	};
 
 	Entity.prototype.getRelativeArea = function () {
@@ -154,18 +157,12 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		return this.getArea().inside(this.relativeMouse());
 	};
 
-	var isFirstLayer = function() {
-
-	}
-
 	Entity.prototype.draw = function (ctx) {
 	    if (!this.visible)
 	        return;
 		ctx.save();
 		ctx.translate(this.position.x | 0, this.position.y | 0);
 
-
-		// 
 		var x = (ScreenConfig.w - ScreenConfig.wViewport) / 2;
 		var y = (ScreenConfig.h - ScreenConfig.hViewport) / 2;
 
@@ -190,16 +187,19 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			if(this.EntityType == "Scene") {
 				ctx.translate(addPosX, addPosY);
 				ctx.scale(scale, scale);
-			} else /*if(this.EntityType == "Background")*/ {
+			} else { // if is Background
 				ctx.scale(1 / scale, 1 / scale);
 				ctx.translate(-addPosX, -addPosY);
 			}
 		}
 
 
-		ctx.translate(this.size.x * this.pivot.x, this.size.y * this.pivot.y);
-		ctx.translate(this.scale.x, this.scale.y);
+		ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
+		//ctx.translate(this.size.x * this.pivot.x, this.size.y * this.pivot.y);
+		//ctx.translate(this.scale.x, this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
+		//ctx.translate(-this.scale.x, -this.scale.y );
+		//ctx.translate(-this.size.x * this.pivot.x, -this.size.y * this.pivot.y  );
 		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );
 
 		if (this.onDraw)
