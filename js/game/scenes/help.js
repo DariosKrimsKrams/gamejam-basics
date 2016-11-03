@@ -2,6 +2,7 @@ define(['system/entity/scene', 'game/entity/back'],
 		function(Scene, BackButton) {
 
 			function HelpScene() {
+				this.resize();
 				this.center(BackButton('menu'));
 			}
 

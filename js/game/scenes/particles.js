@@ -6,7 +6,8 @@ define(['system/entity/scene', 'game/entity/back', 'system/entity/particles', 's
 			graphic.add('img/particles/BloodStainsSmall.png');
 
 			function ParticleScene() {
-				Scene.call(this);
+				//Scene.call(this);
+				this.resize();
 
 				var p1 = new Particles(new Vector2(200, 200), {
 					burst: [

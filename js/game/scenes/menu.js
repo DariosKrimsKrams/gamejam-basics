@@ -1,6 +1,7 @@
 define(['system/entity/scene', 'system/entity/button', 'system/core/game', 'system/geo/vector2', 'system/transitions/slideinright', 'system/lib/morph', 'system/definition/easing', 'system/entity/layout'],
 	function(Scene, Button, game, Vector2, SlideInRightTransition, Morph, Easing, Layout) {
 		function MenuScene() {
+			this.resize();
 
 			var playButton = Button.create(new Vector2(0, 680), function() { game.scene = require('game/config/scenes').play; }).rect(280, 80).text("Play".toLocaleString());
 			var creditsButton = Button.create(new Vector2(0, 680), function() { game.scene = new SlideInRightTransition(require('game/config/scenes').credits, 1000, Easing.OUTQUAD); }).rect(360, 80).text("Credits");

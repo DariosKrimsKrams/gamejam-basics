@@ -25,6 +25,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			scaleInternal: new Vector2(1, 1),
 			currentlyPortrait: false,
 			offset: new Vector2(0, 0),
+			sceneScale: 1,
 
 			resize: function() {
 
@@ -191,6 +192,31 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				// update scene size
 				if(this.scene != undefined)
 					this.scene.setSize(screen.w, screen.h);
+
+				// calculation
+				var x = (screen.w - screen.wViewport) / 2;
+				var y = (screen.h - screen.hViewport) / 2;
+				var scaleX = this.scaleInternal.x;
+				var scaleY = this.scaleInternal.y;
+				var scale = Math.min(scaleX, scaleY);
+				var addPosX = 0;
+				var addPosY = 0;
+
+				// get additional Position offset
+				if(scaleY < scaleX) {
+					addPosX = x + (screen.wViewport * scaleX - (screen.wViewport * scaleY)) / 2;
+				} else {
+					addPosY = y + (screen.hViewport * scaleY - (screen.hViewport * scaleX)) / 2;
+				}
+
+				// save variables
+				this.offset.x = addPosX;
+				this.offset.y = addPosY;
+				this.sceneScale = scale;
+
+				// set scene
+				this.scene.position = new Vector2(addPosX, addPosY);
+				this.scene.scale = new Vector2(scale, scale);
 
 				// update background
 				if(this.scene.background != undefined)

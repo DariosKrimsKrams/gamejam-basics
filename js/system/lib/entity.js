@@ -67,27 +67,27 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		var scaleY = ScreenConfig.h * game.scaleInternal.y / this.size.y;
 		var max = Math.max(scaleX, scaleY);
 
-		var imgWidth = this.size.x * max;
-		var realWidth = ScreenConfig.w * game.scaleInternal.x;
-
 		if(this.size.y * max > ScreenConfig.h * game.scaleInternal.y)
 		{
 			//console.log("more X than Y -> move top");
 			var imgHeight = this.size.y * max;
 			var realHeight = ScreenConfig.h * game.scaleInternal.y;
-			var imgTop = (imgHeight - realHeight) / 2 / game.scale.y;
-			this.position.y = -imgTop;
+			this.position.y = -(imgHeight - realHeight) / 2 / game.scale.y;
+			this.position.y += -game.offset.y / game.sceneScale;
+			this.position.x = -game.offset.x / game.sceneScale;
+
 		}
-		if(this.size.x * max > ScreenConfig.w * game.scaleInternal.x)
+		else if(this.size.x * max > ScreenConfig.w * game.scaleInternal.x)
 		{
 			//console.log("more Y than X -> move left");
 			var imgWidth = this.size.x * max;
 			var realWidth = ScreenConfig.w * game.scaleInternal.x;
-			var imgLeft = (imgWidth - realWidth) / 2 / game.scale.x;
-			//this.position.x = -imgLeft;
-			this.position.x = -imgLeft;
+			this.position.x = -(imgWidth - realWidth) / 2 / game.scale.x;
+			this.position.x += -game.offset.x / game.sceneScale;
+			this.position.y = -game.offset.y / game.sceneScale;
 		}
 
+		max /= game.sceneScale;
 		this.scale = new Vector2(max, max);
 
 	};
@@ -104,6 +104,18 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			return mouse.dif(this.position);
 	};
 
+	// get absolute Position without scene.position
+	Entity.prototype.getAbsolutePos = function () {
+		if (this.parent) {
+			var parentPos = this.parent.getAbsolutePos();
+			parentPos.x += this.position.x;
+			parentPos.y += this.position.y;
+			return parentPos;
+		} else {
+			return Zero();
+		}
+	};
+
 	Entity.prototype.getCenterPoint = function (entity) {
 		return new Vector2(this.position.x + this.size.x / 2, this.position.y + this.size.y / 2);
 	};
@@ -113,8 +125,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	};
 
 	Entity.prototype.remove = function (entity) {
-		if( this.entities.indexOf(entity) > -1 ) arrayRemove(this.entities, entity);
-		if( this.blocking.indexOf(entity) > -1 ) arrayRemove(this.blocking, entity);
+		if(this.entities.indexOf(entity) > -1)
+			arrayRemove(this.entities, entity);
+		if(this.blocking.indexOf(entity) > -1)
+			arrayRemove(this.blocking, entity);
 	};
 
 	Entity.prototype.dispatch = function (list, event, argurment) {
@@ -144,9 +158,11 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.getArea = function () {
 		if (this.size.x == 0 && this.size.y == 0)
 			this.inheritSize();
-		var left = -this.pivotPosition.x * this.size.x * this.scale.x;
-		var top = -this.pivotPosition.y * this.size.y * this.scale.y;
-		return new Rect(new Vector2(left, top), new Vector2(this.size.x * this.scale.x + left, this.size.y * this.scale.y +top));
+		var x = -this.pivotPosition.x * this.size.x * this.scale.x;
+		var y = -this.pivotPosition.y * this.size.y * this.scale.y;
+		var x2 = this.size.x * this.scale.x + x;
+		var y2 = this.size.y * this.scale.y + y;
+		return new Rect(new Vector2(x, y), new Vector2(x2, y2));
 	};
 
 	Entity.prototype.getRelativeArea = function () {
@@ -161,45 +177,15 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	    if (!this.visible)
 	        return;
 		ctx.save();
+
 		ctx.translate(this.position.x | 0, this.position.y | 0);
 
-		var x = (ScreenConfig.w - ScreenConfig.wViewport) / 2;
-		var y = (ScreenConfig.h - ScreenConfig.hViewport) / 2;
-
-		if(this.EntityType == "Scene" || this.EntityType == "Background") {
-
-			var scaleX = game.scaleInternal.x;
-			var scaleY = game.scaleInternal.y;
-
-			var scale = Math.min(scaleX, scaleY);
-			var addPosX = 0;
-			var addPosY = 0;
-
-			// get additional Position offset
-			if(scaleY < scaleX) {
-				addPosX = x + (ScreenConfig.wViewport * scaleX - (ScreenConfig.wViewport * scaleY)) / 2;
-			} else {
-				addPosY = y + (ScreenConfig.hViewport * scaleY - (ScreenConfig.hViewport * scaleX)) / 2;
-			}
-			game.offset.x = addPosX;
-			game.offset.y = addPosY;
-
-			if(this.EntityType == "Scene") {
-				ctx.translate(addPosX, addPosY);
-				ctx.scale(scale, scale);
-			} else { // if is Background
-				ctx.scale(1 / scale, 1 / scale);
-				ctx.translate(-addPosX, -addPosY);
-			}
+		if(this.EntityType == "Scene") {
+			ctx.scale(this.scale.x, this.scale.y);
 		}
 
-
 		ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
-		//ctx.translate(this.size.x * this.pivot.x, this.size.y * this.pivot.y);
-		//ctx.translate(this.scale.x, this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
-		//ctx.translate(-this.scale.x, -this.scale.y );
-		//ctx.translate(-this.size.x * this.pivot.x, -this.size.y * this.pivot.y  );
 		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );
 
 		if (this.onDraw)
@@ -222,10 +208,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 
 	Entity.prototype.click = function (pos) {
 		pos = pos.dif(this.position);
-		
-		if (this.getArea().inside(pos) == false)
+
+		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
 			return;
-		if (this.onClick && this.onClick(pos))
+		if (this.onClick && this.onClick(pos) && this.EntityType != "Scene")
 			return true;
 
 		if (this.blocking.length) {
@@ -237,8 +223,11 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 
 	Entity.prototype.mousedown = function (pos) {
 		pos = pos.dif(this.position);
-		if (!this.getArea().inside(pos)) return;
-		if (this.onMouseDown && this.onMouseDown(pos)) return true;
+
+		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
+			return;
+		if (this.onMouseDown && this.onMouseDown(pos) && this.EntityType != "Scene")
+			return true;
 
 		if (this.blocking.length) {
 			return this.dispatchReverse(this.blocking, 'mousedown', pos);
@@ -249,13 +238,46 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 
 	Entity.prototype.mouseup = function (pos) {
 		pos = pos.dif(this.position);
-		if (!this.getArea().inside(pos)) return;
-		if (this.onMouseUp && this.onMouseUp(pos)) return true;
+
+		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
+			return;
+		if (this.onMouseUp && this.onMouseUp(pos) && this.EntityType != "Scene")
+			return true;
 
 		if (this.blocking.length) {
 			return this.dispatchReverse(this.blocking, 'mouseup', pos);
 		} else {
 			return this.dispatchReverse(this.entities, 'mouseup', pos);
+		}
+	};
+
+	Entity.prototype.mouseover = function (pos) {
+		pos = pos.dif(this.position);
+
+		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
+			return;
+		if (this.onMouseOver && this.onMouseOver(pos) && this.EntityType != "Scene")
+			return true;
+
+		if (this.blocking.length) {
+			return this.dispatchReverse(this.blocking, 'mouseover', pos);
+		} else {
+			return this.dispatchReverse(this.entities, 'mouseover', pos);
+		}
+	};
+
+	Entity.prototype.mouseout = function (pos) {
+		pos = pos.dif(this.position);
+
+		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
+			return;
+		if (this.onMouseOut && this.onMouseOut(pos) && this.EntityType != "Scene")
+			return true;
+
+		if (this.blocking.length) {
+			return this.dispatchReverse(this.blocking, 'mouseout', pos);
+		} else {
+			return this.dispatchReverse(this.entities, 'mouseout', pos);
 		}
 	};
 

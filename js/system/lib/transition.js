@@ -4,8 +4,10 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 			function TransitionScene(toScene, duration, easing) {
 				Scene.call(this);
 				
-				if(game.scene) this.add(this.fromScene = game.scene);
-				if(toScene) this.add(this.toScene = toScene);
+				if(game.scene)
+					this.add(this.fromScene = game.scene);
+				if(toScene)
+					this.add(this.toScene = toScene);
 
 				this.size.x = window.innerWidth;
 				this.size.y = window.innerHeight;
