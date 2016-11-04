@@ -108,8 +108,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.getAbsolutePos = function () {
 		if (this.parent) {
 			var parentPos = this.parent.getAbsolutePos();
-			parentPos.x += this.position.x;
-			parentPos.y += this.position.y;
+			if(this.EntityType != "Scene") {
+				parentPos.x += this.position.x;
+				parentPos.y += this.position.y;
+			}
 			return parentPos;
 		} else {
 			return Zero();
