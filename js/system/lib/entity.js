@@ -178,11 +178,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	        return;
 		ctx.save();
 
-		ctx.translate(this.position.x | 0, this.position.y | 0);
-
 		if(this.EntityType == "Scene") {
 			ctx.scale(this.scale.x, this.scale.y);
 		}
+		ctx.translate(this.position.x | 0, this.position.y | 0);
 
 		ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
 		ctx.rotate(this.rotation * Math.PI / 180);
