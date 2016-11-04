@@ -19,7 +19,7 @@ define(
 
 			game.init(scene);
 
-			if(config.debug) {
+			if(config.debugFrame) {
 				debug.init();
 			}
 			

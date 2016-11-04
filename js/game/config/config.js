@@ -1,3 +1,4 @@
 define({
-	debug: false
+	debug: true,
+	debugFrame: false,
 });
