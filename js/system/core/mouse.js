@@ -82,7 +82,6 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		}
 
 		gameframe.onclick = function (ev) {
-			console.log("onclick");
 			if(self.x == 0 && self.y == 0)
 				this.onmousemove(ev);
 

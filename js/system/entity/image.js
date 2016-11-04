@@ -39,7 +39,7 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity', 'syste
 					if(this.recolor) 
 					{
 						var pos = this.getAbsolutePos();
-						ColorConverter.recolor(ctx, pos, x1, y1, x2, y2, this.img, this.recolorValue);
+						ColorConverter.recolor(ctx, pos, x1, y1, x2, y2, this.recolorValue);
 					}
 				}
 
@@ -47,15 +47,8 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity', 'syste
 			};
 
 			ImageEntity.prototype.convertColor = function(recolorValue) {
-
-				//this.onDraw();
 				this.recolor = true;
 				this.recolorValue = recolorValue;
-
-				//ColorConverter.recolor(this.img, -.33);
-
-
-
 			};
 
 			return ImageEntity;

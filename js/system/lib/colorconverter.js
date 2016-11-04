@@ -17,7 +17,7 @@ define(['system/core/graphic', 'system/core/game'],
 			    //recolor(-.33);
 			//}
 
-			recolor: function(ctx, pos, x1, y1, x2, y2, img, colorshift) {
+			recolor: function(ctx, pos, x1, y1, x2, y2, colorshift) {
 
 				x1 += (pos.x + x1) * game.sceneScale - x1;
 				y1 += (pos.y + y1) * game.sceneScale - y1;

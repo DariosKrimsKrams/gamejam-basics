@@ -215,8 +215,9 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				this.sceneScale = scale;
 
 				// set scene
-				this.scene.position = new Vector2(addPosX, addPosY);
-				this.scene.scale = new Vector2(scale, scale);
+				this.scene.resize();
+				//this.scene.position = new Vector2(addPosX, addPosY);
+				//this.scene.scale = new Vector2(scale, scale);
 
 				// update background
 				if(this.scene.background != undefined)
