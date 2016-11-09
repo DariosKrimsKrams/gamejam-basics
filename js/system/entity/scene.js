@@ -36,9 +36,6 @@ define([
 					ctx.fillStyle = this.bgColor;
 				}
 				ctx.fillRect(0, 0, this.size.x, this.size.y);
-				if (this.bg) {
-					ctx.drawImage(graphics[this.bg], 0, 0);
-				}
 			};
 
 			Scene.prototype.up = function (key) {

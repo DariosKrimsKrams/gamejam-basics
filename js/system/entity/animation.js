@@ -33,8 +33,11 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2', 'syste
 			Animation.prototype.constructor = Animation;
 
 			Animation.prototype.onUpdate = function(delta) {
+				if(!this.visible)
+					return;
 				if(!this.isAnimating)
 					return;
+			console.log(this);
 
 				this.anitime += delta;
 				var frameNew = Math.floor(this.anitime / this.duration);

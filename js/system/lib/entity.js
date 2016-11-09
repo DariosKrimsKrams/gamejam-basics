@@ -178,6 +178,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.draw = function (ctx) {
 	    if (!this.visible)
 	        return;
+	    game.drawCount++;
 		ctx.save();
 
 		if(this.EntityType == "Scene") {
@@ -185,9 +186,11 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		}
 		ctx.translate(this.position.x | 0, this.position.y | 0);
 
-		ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
-		ctx.rotate(this.rotation * Math.PI / 180);
-		ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );
+		if(this.rotation != 0) {
+			ctx.translate(this.size.x * this.pivot.x * this.scale.x, this.size.y * this.pivot.y * this.scale.y);
+			ctx.rotate(this.rotation * Math.PI / 180);
+			ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );	
+		}
 
 		if (this.onDraw)
 		    this.onDraw(ctx);
