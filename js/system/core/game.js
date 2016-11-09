@@ -12,6 +12,8 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 		return {
 			frames: 0,
 			fps: 25,
+			drawCount: 0,
+			drawCountLast: 0,
 
 			scene: null,
 			lastUpdate: 0,
@@ -92,6 +94,8 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			updateFramerate: function() {
 				this.fps = this.frames;
 				this.frames = 0;
+				this.drawCountLast = this.drawCount;
+				this.drawCount = 0;
 			},
 
 			loop: function() {
@@ -126,7 +130,9 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 				if( config.debug ) {
 					fonts.frames.apply(this.displayCtx);
-					this.displayCtx.fillText(this.fps, 15, 15);
+					this.displayCtx.fillText("FPS: " + this.fps, 65, 15);
+					this.displayCtx.fillText("Draws/Sec: " + this.drawCountLast, 65, 35);
+					this.displayCtx.fillText("Draws/Frame: " + Math.round(this.drawCountLast / this.fps), 65, 55);
 				}
 			},
 
