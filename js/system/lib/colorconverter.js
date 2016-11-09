@@ -53,10 +53,8 @@ define(['system/core/graphic', 'system/core/game'],
 			        }
 			    }
 			    ctx.putImageData(imgData, x1, y1);
-			    //console.log(imgData);
 
 			},
-
 
 			rgbToHsl: function(r, g, b) {
 			    r /= 255, g /= 255, b /= 255;
@@ -90,7 +88,6 @@ define(['system/core/graphic', 'system/core/game'],
 			    });
 			},
 
-
 			hslToRgb: function(h, s, l) {
 			    var r, g, b;
 
@@ -118,7 +115,66 @@ define(['system/core/graphic', 'system/core/game'],
 			        g: Math.round(g * 255),
 			        b: Math.round(b * 255),
 			    });
-			}
+			},
+
+			blackAndWhite: function(ctx, pos, x1, y1, x2, y2) {
+				x1 += (pos.x + x1) * game.sceneScale - x1;
+				y1 += (pos.y + y1) * game.sceneScale - y1;
+				x1 += game.offset.x;
+				y1 += game.offset.y;
+				x2 *= game.sceneScale;
+				y2 *= game.sceneScale;
+			    var imgData = ctx.getImageData(x1, y1, x2, y2);
+			    var data = imgData.data;
+				for(var y = 0; y < imgData.height; y++){
+					for(var x = 0; x < imgData.width; x++){
+						var i = (y * 4) * imgData.width + x * 4;
+						var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+						data[i] = avg;
+						data[i + 1] = avg;
+						data[i + 2] = avg;
+					}
+				}
+				ctx.putImageData(imgData, x1, y1);
+			},
+
+			/*
+			TRYING to begin some desaturate functionality -> not finished yet!
+			desaturate: function(ctx, pos, x1, y1, x2, y2) {
+
+
+				x1 += (pos.x + x1) * game.sceneScale - x1;
+				y1 += (pos.y + y1) * game.sceneScale - y1;
+				x1 += game.offset.x;
+				y1 += game.offset.y;
+				x2 *= game.sceneScale;
+				y2 *= game.sceneScale;
+
+			    var imgData = ctx.getImageData(x1, y1, x2, y2);
+			    var data = imgData.data;
+
+			    for (var i = 0; i < data.length; i += 4) {
+
+			        // skip transparent/semiTransparent pixels
+					var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+			        if (avg > 200) {
+			            continue;
+			        }
+
+					var val = 0.5;
+					data[i] = data[i] * val;
+					data[i+1] = data[i+1] * val;
+					data[i+2] = data[i+2] * val;
+				}
+
+			    ctx.putImageData(imgData, x1, y1);
+			},
+
+			RGBtoGRAYSCALE: function (r, g, b) {
+				// Returns single monochrome figure:
+				return window.parseInt((0.2125 * r) + (0.7154 * g) + (0.0721 * b), 10);
+			}*/
+
 
 		};
 });
