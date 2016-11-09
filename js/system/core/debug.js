@@ -3,6 +3,7 @@ define(['system/core/game'], function(game) {
 
 		init: function() {
 
+			var self = this;
 			this.debugHtml = "";
 			this.debugFrame;
 
@@ -11,7 +12,7 @@ define(['system/core/game'], function(game) {
 			gameFrame.insertAdjacentHTML('afterEnd', "<div id=\"debug\"></div>")
 			this.debugFrame = document.getElementById('debug');
 
-			this.buildStructure();
+			setInterval( function() { self.buildStructure(); }, 1000 );
 
 		},
 
