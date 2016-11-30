@@ -151,10 +151,11 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 
 	};
 
-	if (!config.debug)
+	if (!config.debug) {
 		document.addEventListener("contextmenu", function (e) {
 			e.preventDefault();
 		}, false);
+	}
 
 	return mouse;
 });

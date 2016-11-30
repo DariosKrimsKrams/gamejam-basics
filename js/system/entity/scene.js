@@ -29,6 +29,10 @@ define([
 			Scene.prototype.resize = function () {
 				this.position = new Vector2(game.offset.x / game.sceneScale, game.offset.y / game.sceneScale);
 				this.scale = new Vector2(game.sceneScale, game.sceneScale);
+
+				// update background
+				if(this.background != undefined)
+					this.background.setToFullscreenCutOff();
 			};
 
 			Scene.prototype.onDraw = function (ctx) {
