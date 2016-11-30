@@ -4,19 +4,42 @@ define( function() {
 		sampels: [],
 		urls: [],
 
-		play: function( file ) {
+		play: function( file, loop, volume ) {
 			var self = this;
+
+			if(loop === undefined)
+				loop = false;
+			if(volume === undefined)
+				volume = 1;
 
 			if( !this.sampels[file] )
 				this.sampels[file] = [];
 
 			if( this.sampels[file].length ) {
 				var sample = this.sampels[file].pop();
+				if(loop === true) {
+					sample.ontimeupdate = function(i) {
+						if((this.currentTime / this.duration) > 0.6){
+							this.currentTime = 0;
+							this.play();
+						}
+					};
+				}
+				sample.volume = volume;
 				sample.play();
 				return sample;
 			} else {
 				var sample = new Audio( file );
 				sample.onended = function() { self.sampels[file].push( this ); };
+				if(loop === true) {
+					sample.ontimeupdate = function(i) {
+						if((this.currentTime / this.duration) > 0.6){
+							this.currentTime = 0;
+							this.play();
+						}
+					};
+				}
+				sample.volume = volume;
 				sample.play();
 				return sample;
 			}
@@ -24,6 +47,14 @@ define( function() {
 
 		add: function(url) {
 			this.urls.push(url);
+		},
+
+		pause: function(sample) {
+			sample.pause();
+		},
+
+		playAgain: function(sample) {
+			sample.play();
 		},
 
 		load: function( callback ) {
