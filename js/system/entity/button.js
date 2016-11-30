@@ -25,20 +25,20 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system
 				this.size.y = Math.max(h||0, this.size.y);
 
 				var self = this;
-				var txt = new TextEntity(new Vector2(this.size.x/2, this.size.y/2), text, font, fontSize);
+				this.text = new TextEntity(new Vector2(this.size.x/2, this.size.y/2), text, font, fontSize);
 
-				txt.hover = function() { return self.hover(); };
-				this.setText = function(s) { txt.text = s };
+				this.text.hover = function() { return self.hover(); };
+				this.setText = function(s) { this.text.text = s };
 
-				this.add(txt);
+				this.add(this.text);
 				return this;
 			};
 
 			Button.prototype.img = function(src, scale) {
-				var img = new ImageEntity(Zero(), src, scale);
-				this.size.x = Math.max(img.size.x, this.size.x);
-				this.size.y = Math.max(img.size.y, this.size.y);
-				this.add(img);
+				this.img = new ImageEntity(Zero(), src, scale);
+				this.size.x = Math.max(this.img.size.x * this.img.scale.x, this.size.x * this.scale.x);
+				this.size.y = Math.max(this.img.size.y * this.img.scale.y, this.size.y * this.scale.y);
+				this.add(this.img);
 				return this;
 			};
 
