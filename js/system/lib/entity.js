@@ -13,7 +13,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.size = size || Zero();
 		this.rotation = 0;
 		this.pivot = Zero(); //for rotation -> between 0,0 and 1,1
-		this.pivotPosition = Zero(); // between 0,0 and 1,1
+		this.pivotPosition = Zero(); // for rotation and scale -> between 0,0 and 1,1
         this.scale = new Vector2(1, 1);
 
 		this.entities = [];
@@ -21,6 +21,9 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.parent = null;
 		this.visible = true;
 		this.EntityType = "None";
+		this.mirrorH = false; // flip horizontal
+		this.mirrorV = false; // flip vertical
+		this.opacity = 1;
 	}
 
 	Entity.prototype.setSize = function (w, h) {
@@ -192,8 +195,14 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			ctx.translate(-this.size.x * this.pivot.x * this.scale.x, -this.size.y * this.pivot.y * this.scale.y );	
 		}
 
+		if(this.opacity != 0)
+			ctx.globalAlpha = this.opacity;
+
 		if (this.onDraw)
 		    this.onDraw(ctx);
+
+		if(this.opacity != 0)
+			ctx.globalAlpha = 1;
 
 		this.dispatch(this.entities, 'draw', ctx);
 		this.dispatch(this.blocking, 'draw', ctx);
