@@ -11,7 +11,7 @@ define(['system/lib/entity', 'game/config/fonts'],
 			TextEntity.prototype.constructor = TextEntity;
 
 			TextEntity.prototype.onDraw = function(ctx) {
-				this.font.apply(ctx, this.hover(), this.fontSize);
+				this.font.apply(ctx, this.hover(), this.fontSize * this.scale.x);
 				ctx.fillText(this.text, 0, 0);
 			};
 
