@@ -15,7 +15,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			drawCount: 0,
 			drawCountLast: 0,
 
-			scene: null,
+			scene: null, // for changing Scene -> use method SetScene(scene)
 			lastUpdate: 0,
 
 			display: null,
@@ -102,7 +102,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				var now = Date.now();
 				var delta = now - this.lastUpdate;
 
-				if( delta < 250 && this.scene ) {	
+				if( delta < 250 && this.scene ) {
 					this.update( delta );
 					this.draw();
 				}
@@ -222,13 +222,12 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 				// set scene
 				this.scene.resize();
-				//this.scene.position = new Vector2(addPosX, addPosY);
-				//this.scene.scale = new Vector2(scale, scale);
 
-				// update background
-				if(this.scene.background != undefined)
-					this.scene.background.setToFullscreenCutOff();
+			},
 
+			setScene: function(scene) {
+				this.scene = scene;
+				this.scene.resize();
 			}
 
 
