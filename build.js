@@ -1,5 +1,7 @@
 ({
 	baseUrl: "js",
 	name: "main",
-	out: "game.js"
+	out: "main.js",
+	optimize: "uglify", // uglify | none
+	normalizeDirDefines: "all",
 })
