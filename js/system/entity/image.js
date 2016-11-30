@@ -22,6 +22,13 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity', 'syste
 					var x2 = this.size.x * this.scale.x | 0;
 					var y2 = this.size.y * this.scale.y | 0;
 
+					if(this.mirrorH || this.mirrorV) {
+						var scaleH = this.mirrorH ? -1 : 1;
+						var scaleV = this.mirrorV ? -1 : 1;
+						ctx.scale(scaleH, scaleV);
+						x1 -= x2;
+					}
+
 					ctx.drawImage(
 						this.img,
 						0,
