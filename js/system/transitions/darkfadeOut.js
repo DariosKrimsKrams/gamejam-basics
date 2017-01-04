@@ -13,13 +13,12 @@ define(['system/lib/transition'],
 				ctx.fillStyle = "#000000";
 				ctx.fillRect(0, 0, this.size.x, this.size.y);
 				
-				var opacity = Math.abs(this.progress - 0.5) * 2;
+				// added delation of 1 frame
+				var opacity = -0.3 + this.progress * 1.3;
+				if(opacity < 0)
+					opacity = 0;
 				ctx.globalAlpha = opacity;
-				if(this.progress <= 0.5) {
-					ctx.drawImage(this.fromBuffer.buffer, 0, 0);
-				} else {
-					ctx.drawImage(this.toBuffer.buffer, 0, 0);
-				}
+				ctx.drawImage(this.toBuffer.buffer, 0, 0);
 			}
 						
 			return DarkfadeTransition;

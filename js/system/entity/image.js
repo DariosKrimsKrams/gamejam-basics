@@ -5,9 +5,8 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity', 'syste
 				Entity.call(this, pos, new Vector2(this.img.width, this.img.height));
 				this.scale = scale || new Vector2(1, 1);
 
-				this.recolor = false;
-				this.recolorValue = 0;
-				//this.doDesaturate = false;
+				//this.recolor = false;
+				//this.recolorValue = 0;
 			}
 
 			ImageEntity.prototype = new Entity();
@@ -41,25 +40,17 @@ define(['system/core/graphic', 'system/geo/vector2', 'system/lib/entity', 'syste
 						y2
 					);
 
-					if(this.recolor)  {
-						var pos = this.getAbsolutePos();
-						ColorConverter.recolor(ctx, pos, x1, y1, x2, y2, this.recolorValue);
-					}
-
-					//if(this.doDesaturate) {
-						//ColorConverter.desaturate(ctx, pos, x1, y1, x2, y2);
+					//if(this.recolor)  {
+						//var pos = this.getAbsolutePos();
+						//ColorConverter.recolor(ctx, pos, x1, y1, x2, y2, this.recolorValue);
 					//}
 
 				}
 			};
 
-			ImageEntity.prototype.convertColor = function(recolorValue) {
-				this.recolor = true;
-				this.recolorValue = recolorValue;
-			};
-
-			//ImageEntity.prototype.desaturateColor = function() {
-				//this.doDesaturate = true;
+			//ImageEntity.prototype.convertColor = function(recolorValue) {
+				//this.recolor = true;
+				//this.recolorValue = recolorValue;
 			//};
 
 			return ImageEntity;

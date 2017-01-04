@@ -1,5 +1,5 @@
-define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/lib/morph'],
-		function(Scene, Entity, game, Morph) {
+define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/lib/morph', 'game/config/screen', 'system/core/game'],
+		function(Scene, Entity, game, Morph, Screen, Game) {
 
 			function TransitionScene(toScene, duration, easing) {
 				Scene.call(this);
@@ -15,7 +15,14 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 
 				this.size.x = window.innerWidth;
 				this.size.y = window.innerHeight;
-								
+
+				// change size if portrait
+				if(Game.currentlyPortrait) {
+					var tmp = this.size.x;
+					this.size.x = this.size.y;
+					this.size.y = tmp;
+				}
+						
 				this.fromBuffer = this.createBuffer();
 				this.toBuffer = this.createBuffer();
 				
@@ -46,7 +53,8 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 			
 			TransitionScene.prototype.endTransition = function() {
 				game.scene = this.toScene;
-				//game.setScene(this.toScene);
+				//game.setScene(this.toScene);	
+				this.toScene.sceneLoaded();
 			};
 			
 			TransitionScene.prototype.performTransition = function(ctx) {

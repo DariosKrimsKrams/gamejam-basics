@@ -1,7 +1,7 @@
 define(['system/geo/vector2', 'system/geo/rect', 'game/config/config'], function(Vector2, Rect, config) {
 	function Poly( vector_list ) {
 		if ( config.debug && vector_list.length < 3 )
-			console.log("Warning: Creating polygon with less than three vertices!");
+			console.warn("Warning: Creating polygon with less than three vertices!");
 
 		this.points = vector_list;
 		this.calcSize();

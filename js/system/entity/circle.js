@@ -5,6 +5,7 @@ define(['system/lib/entity', 'system/geo/circle', 'game/config/colors', 'system/
 				this.circle = new Circle(new Vector2(radius, radius), radius);
 				this.isFill = true;
 				this.isStroke = true;
+				this.lineWidth = 1;
 
 				// Be careful that a rectangle of 0, 0, size.x, size.y does not surround the polygon!
 				// See PolyEntity.clearOffset()
@@ -21,6 +22,9 @@ define(['system/lib/entity', 'system/geo/circle', 'game/config/colors', 'system/
 
 
 				ctx.arc(this.circle.center.x, this.circle.center.y, this.circle.radius, 0, 2*Math.PI);
+				
+				ctx.lineWidth = this.lineWidth;
+
 				//ctx.arc(100,75,50,0,2*Math.PI);
 
 				//var first = true;

@@ -1,4 +1,4 @@
-define( function() {
+define(['game/config/config'], function(Config) {
 	return {
 		
 		sampels: [],
@@ -6,6 +6,9 @@ define( function() {
 
 		play: function( file, loop, volume ) {
 			var self = this;
+
+			if(!Config.isMusicOn)
+				return;
 
 			if(loop === undefined)
 				loop = false;
@@ -54,6 +57,8 @@ define( function() {
 		},
 
 		playAgain: function(sample) {
+			if(!Config.isMusicOn)
+				return;
 			sample.play();
 		},
 

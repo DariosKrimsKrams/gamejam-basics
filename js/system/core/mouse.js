@@ -55,6 +55,8 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 				var entity = obj.entities[i];
 				if(!entity.visible)
 					continue;
+				if(!entity.clickable)
+					continue;
 				result = checkEntityVsMouse(entity);
 				if(result)
 					return true;

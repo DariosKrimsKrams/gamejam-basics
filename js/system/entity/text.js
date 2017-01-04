@@ -5,6 +5,7 @@ define(['system/lib/entity', 'game/config/fonts'],
 				this.text = text;
 				this.font = font || fonts.default;
 				this.fontSize = fontSize || this.font.size;
+				this.textAlign = "center";
 			}
 
 			TextEntity.prototype = new Entity();
@@ -12,6 +13,7 @@ define(['system/lib/entity', 'game/config/fonts'],
 
 			TextEntity.prototype.onDraw = function(ctx) {
 				this.font.apply(ctx, this.hover(), this.fontSize * this.scale.x);
+				ctx.textAlign = this.textAlign; 
 				ctx.fillText(this.text, 0, 0);
 			};
 

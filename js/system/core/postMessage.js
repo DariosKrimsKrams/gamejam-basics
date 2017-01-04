@@ -8,9 +8,12 @@ define([
 
 
 	var postOrigin = "";
-	var gameName = "";
+	var gameName = "test";
 
 	return {
+
+		//postOrigin: '',
+		//gameName: 'elferlifa',
 
 		init: function () {
 			this.setPostOrigin();
@@ -31,7 +34,6 @@ define([
 
 			//console.log("receiveMessage");
 			//console.log(event);
-			//console.log(postOrigin);
 
 			// dont trust all senders
 			if (event.origin !== postOrigin)
@@ -44,22 +46,10 @@ define([
 			
 			switch(command) {
 				case 'playGame':
-
-				//console.log(GameplayController);
-
-					GameplayConfig.isDemoGame = false;
-					GameplayConfig.Controller.doRequestPlayGame();
-
-					// TODO maybe loading or hide Button
-
 					break;
 				case 'playDemoGame':
-
-					GameplayConfig.isDemoGame = true;
-					GameplayConfig.Controller.doRequestPlayDemoGame();
-
-					// TODO maybe loading or hide Button
-
+					break;
+				case 'updateNickname':
 					break;
 			}
 

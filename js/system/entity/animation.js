@@ -26,8 +26,8 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2', 'syste
 				this.frameY = 0;
 				this.isAnimating = true;
 
-				this.recolor = false;
-				this.recolorValue = 0;
+				//this.recolor = false;
+				//this.recolorValue = 0;
 
 				Entity.call(this, pos, new Vector2(this.img.width / this.division.x, this.img.height / this.division.y ));
 			}
@@ -82,6 +82,7 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2', 'syste
 				var x2 = this.size.x * this.scale.x | 0;
 				var y2 = this.size.y * this.scale.y | 0;
 
+				var x1Recolor = x1;
 				if(this.mirrorH || this.mirrorV) {
 					var scaleH = this.mirrorH ? -1 : 1;
 					var scaleV = this.mirrorV ? -1 : 1;
@@ -101,17 +102,17 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2', 'syste
 					y2
 				);
 
-				if(this.recolor) 
-				{
-					var pos = this.getAbsolutePos();
-					ColorConverter.recolor(ctx, pos, x1, y1, x2, y2, this.recolorValue);
-				}
+				//if(this.recolor) 
+				//{
+					//var pos = this.getAbsolutePos();
+					//ColorConverter.recolor(ctx, pos, x1Recolor, y1, x2, y2, this.recolorValue);
+				//}
 			};
 
-			Animation.prototype.convertColor = function(recolorValue) {
-				this.recolor = true;
-				this.recolorValue = recolorValue;
-			};
+			//Animation.prototype.convertColor = function(recolorValue) {
+				//this.recolor = true;
+				//this.recolorValue = recolorValue;
+			//};
 
 			return Animation;
 		}

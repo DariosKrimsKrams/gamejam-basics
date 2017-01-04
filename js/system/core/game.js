@@ -28,6 +28,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			currentlyPortrait: false,
 			offset: new Vector2(0, 0),
 			sceneScale: 1,
+			//drawingInvisible: true,
 
 			resize: function() {
 
@@ -124,6 +125,8 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				this.displayCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 				this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 
+				//if(this.drawingInvisible)
+				this.scene.draw( this.bufferCtx, false );
 				this.scene.draw( this.bufferCtx );
 
 				this.displayCtx.drawImage( this.buffer, 0, 0, this.buffer.width, this.buffer.height );
@@ -196,7 +199,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			onUpdateScreenSizes: function(min, height) {
 
 				// update scene size
-				if(this.scene != undefined)
+				if(this.scene !== undefined)
 					this.scene.setSize(screen.w, screen.h);
 
 				// calculation
@@ -221,7 +224,8 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				this.sceneScale = scale;
 
 				// set scene
-				this.scene.resize();
+				if(this.scene !== undefined)
+					this.scene.resize();
 
 			},
 

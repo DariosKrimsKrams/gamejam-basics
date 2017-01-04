@@ -21,6 +21,7 @@ define([
 			    this.bgColor = "#DDD";
 				this.EntityType = "Scene";
 				this.background;
+				this.positionMove = Zero();
 			}
 
 			Scene.prototype = new Entity();
@@ -40,6 +41,9 @@ define([
 					ctx.fillStyle = this.bgColor;
 				}
 				ctx.fillRect(0, 0, this.size.x, this.size.y);
+
+				ctx.translate(this.positionMove.x | 0, this.positionMove.y | 0);
+
 			};
 
 			Scene.prototype.up = function (key) {
@@ -48,6 +52,9 @@ define([
 
 			Scene.prototype.down = function (key) {
 				this.dispatch(this.keyAware, 'down', key);
+			};
+
+			Scene.prototype.sceneLoaded = function () {
 			};
 
 			return Scene;

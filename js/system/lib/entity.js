@@ -1,11 +1,4 @@
 define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/config/screen', 'system/core/game'], function(Vector2, Rect, mouse, ScreenConfig, game) {
-	
-	/*const EntityType = {
-		None: '',
-		Image: '',
-		Scene: '',
-		Background: '',
-	}*/
 
     function Entity(pos, size) {
 
@@ -20,6 +13,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		this.blocking = [];
 		this.parent = null;
 		this.visible = true;
+		this.clickable = true;
 		this.EntityType = "None";
 		this.mirrorH = false; // flip horizontal
 		this.mirrorV = false; // flip vertical
@@ -35,7 +29,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		var origin = new Vector2(0, 0);
 		var end = new Vector2(0, 0);
 
-		for (var i = 0; i < this.entities.length; i++)
+		for (var i = 0; i < this.entities.length; i++) {
 			if(this.entities[i].size) {
 				var entity = this.entities[i];
 				var p2 = entity.position.sum(entity.size);
@@ -45,6 +39,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 				end.x = Math.max(p2.x, end.x);
 				end.y = Math.max(p2.y, end.y);
 			}
+		}
 
 		this.size = end.sub(origin);
 	};
@@ -70,7 +65,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		var scaleY = ScreenConfig.h * game.scaleInternal.y / this.size.y;
 		var max = Math.max(scaleX, scaleY);
 
-		if(this.size.y * max > ScreenConfig.h * game.scaleInternal.y)
+		if(this.size.y * max >= ScreenConfig.h * game.scaleInternal.y)
 		{
 			//console.log("more X than Y -> move top");
 			var imgHeight = this.size.y * max;
@@ -78,9 +73,8 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			this.position.y = -(imgHeight - realHeight) / 2 / game.scale.y;
 			this.position.y += -game.offset.y / game.sceneScale;
 			this.position.x = -game.offset.x / game.sceneScale;
-
 		}
-		else if(this.size.x * max > ScreenConfig.w * game.scaleInternal.x)
+		if(this.size.x * max >= ScreenConfig.w * game.scaleInternal.x)
 		{
 			//console.log("more Y than X -> move left");
 			var imgWidth = this.size.x * max;
@@ -91,6 +85,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		}
 
 		max /= game.sceneScale;
+
 		this.scale = new Vector2(max, max);
 
 	};
@@ -136,10 +131,10 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			arrayRemove(this.blocking, entity);
 	};
 
-	Entity.prototype.dispatch = function (list, event, argurment) {
+	Entity.prototype.dispatch = function (list, event, argurment, arg2) {
 		for (var i = 0; i < list.length; i++)
 			if (list[i][event])
-				list[i][event](argurment);
+				list[i][event](argurment, arg2);
 	};
 
 	Entity.prototype.dispatchReverse = function (list, event, argurment) {
@@ -178,14 +173,20 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		return this.getArea().inside(this.relativeMouse());
 	};
 
-	Entity.prototype.draw = function (ctx) {
-	    if (!this.visible)
-	        return;
+	Entity.prototype.draw = function (ctx, visible) {
+		if(visible === undefined)
+			visible = true;
+	    //if (!this.visible && !game.drawingInvisible)
+	        //return;
+
 	    game.drawCount++;
 		ctx.save();
 
 		if(this.EntityType == "Scene") {
 			ctx.scale(this.scale.x, this.scale.y);
+		}
+		if(this.EntityType == "Background") {
+			ctx.translate(-this.parent.positionMove.x | 0, -this.parent.positionMove.y | 0);
 		}
 		ctx.translate(this.position.x | 0, this.position.y | 0);
 
@@ -198,14 +199,15 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		if(this.opacity != 0)
 			ctx.globalAlpha = this.opacity;
 
+    if (this.visible === visible)
 		if (this.onDraw)
 		    this.onDraw(ctx);
 
 		if(this.opacity != 0)
 			ctx.globalAlpha = 1;
 
-		this.dispatch(this.entities, 'draw', ctx);
-		this.dispatch(this.blocking, 'draw', ctx);
+		this.dispatch(this.entities, 'draw', ctx, visible);
+		this.dispatch(this.blocking, 'draw', ctx, visible);
 
 		if (this.postDraw)
 		    this.postDraw(ctx);

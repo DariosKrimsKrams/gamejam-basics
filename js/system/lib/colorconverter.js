@@ -1,30 +1,61 @@
 define(['system/core/graphic', 'system/core/game'],
 	function(Graphics, game) {
-
-		//var canvas = document.getElementById("gameframe");
-		//var ctx = canvas.getContext("2d");
-		//var img = undefined;
-		//img.crossOrigin = "anonymous";
-		//img.onload = start;
-		//img.src = "https://dl.dropboxusercontent.com/u/139992952/multple/marioStanding.png";
-
-
+		// https://davidwalsh.name/convert-canvas-image
 		return {
 
-			//function start() {
-				//console.log(img);
-			    // shift blueish colors to greenish colors
-			    //recolor(-.33);
-			//}
+			isInit: false,
+			canvas: null,
+			canvasCtx: null,
 
-			recolor: function(ctx, pos, x1, y1, x2, y2, colorshift) {
 
-				x1 += (pos.x + x1) * game.sceneScale - x1;
-				y1 += (pos.y + y1) * game.sceneScale - y1;
-				x1 += game.offset.x;
-				y1 += game.offset.y;
-				x2 *= game.sceneScale;
-				y2 *= game.sceneScale;
+			init: function() {
+
+				if(!this.isInit) {
+					this.isInit = true;
+					this.canvas = document.createElement('canvas');
+					this.canvasCtx = this.canvas.getContext('2d');
+				}
+
+			},
+
+			doRecolorImage: function(image, recolorValue) {
+
+				// set width & height
+				this.canvas.width = image.width;
+				this.canvas.height = image.height;
+
+				// clear
+				this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+				// img to canvas
+				this.canvasCtx.drawImage(image, 0, 0);
+
+				//this[url] = doRecolor(this[url], recolorVal);
+				this.recolor(this.canvasCtx, 0, 0, this.canvas.width, this.canvas.height, recolorValue);
+
+				// canvas to img
+				//var image = new Image();
+				image.onload = null;
+				image.src = this.canvas.toDataURL("image/png");
+
+				// return
+				return image;
+
+			},
+
+			recolor: function(ctx, x1, y1, x2, y2, colorshift) {
+
+				//x1 += (pos.x + x1) * game.sceneScale - x1;
+				//y1 += (pos.y + y1) * game.sceneScale - y1;
+				//x1 += game.offset.x;
+				//y1 += game.offset.y;
+				//x2 *= game.sceneScale;
+				//y2 *= game.sceneScale;
+
+				//x1 = parseInt(x1);
+				//y1 = Math.ceil(y1);
+				//x2 = parseInt(x2);
+				//y2 = Math.ceil(y2);
 
 			    var imgData = ctx.getImageData(x1, y1, x2, y2);
 			    var data = imgData.data;

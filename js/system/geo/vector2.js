@@ -26,6 +26,7 @@ define(function() {
 	Vector2.prototype.inverse = function() { return new Vector2( this.x * -1, this.y * -1 );};
 
 	Vector2.prototype.clone = function() { return new Vector2( this.x, this.y ); };
+	Vector2.prototype.copy = function() { return clone(); };
 	Vector2.prototype.equal = function( v ) { return v.x == this.x && v.y == this.y };
 	Vector2.prototype.abs = function() { return new Vector2( Math.abs(this.x), Math.abs(this.y)); };
 	
