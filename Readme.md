@@ -9,13 +9,15 @@ Features:
 * Scene und Hierarchies
 * Scale and Rotation options
 * require.js for several files and minifying
+* Entities
 * Animations
 * Tiled Maps
 * Basic Input handling
 	* Mouse
 	* Keyboard
-* Loca
+* Localization
 * Basic Particles
-* ...
 
-
+Used in following Games
+* www.tipp24.com/elferliga
+* and many Gamejam projects
