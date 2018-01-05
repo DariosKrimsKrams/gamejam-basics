@@ -2,9 +2,9 @@
 
 > [game-coding.com](http://game-codi.ng)
 
-HTML5 Basics is a lightweight javascript framework for developing simple games. The project ist deprecated because using PixiJS is more meaningful.
+"Gamejam Basics" is a lightweight js framework for developing simple HTML5 games. An alternative to this project is for example PixiJS that is more powerful.
 
-Features:
+## Features:
 
 * Scene und Hierarchies
 * Scale and Rotation options
