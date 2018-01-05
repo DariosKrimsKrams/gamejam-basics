@@ -21,3 +21,9 @@
 Used in following Games
 * www.tipp24.com/elferliga
 * and many Gamejam projects
+
+## Contributors:
+  * ![MasterIV](https://avatars2.githubusercontent.com/u/1334077?s=50) [MasterIV](https://github.com/MasterIV)//
+  * ![Kevin Kub](https://avatars3.githubusercontent.com/u/454950?s=50) [Kevin Kub](https://github.com/kevinkub)
+  * ![Dario D. Müller](https://avatars1.githubusercontent.com/u/2358139?s=50) [Dario D. Müller](https://github.com/DarioDomiDE)
+
