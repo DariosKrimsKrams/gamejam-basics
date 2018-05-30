@@ -24,9 +24,12 @@ define(function() {
 	Vector2.prototype.grid = function( w, h ) { this.x = Math.floor( this.x / w ); this.y = Math.floor( this.y / h ); };
 	Vector2.prototype.invert = function() { this.x *= -1; this.y *= -1;};
 	Vector2.prototype.inverse = function() { return new Vector2( this.x * -1, this.y * -1 );};
+	Vector2.prototype.insideRect = function(rect) {
+		return this.x >= rect.p1.x && this.x <= rect.p2.x && this.y >= rect.p1.y && this.y <= rect.p2.y
+	};
 
 	Vector2.prototype.clone = function() { return new Vector2( this.x, this.y ); };
-	Vector2.prototype.copy = function() { return clone(); };
+	Vector2.prototype.copy = function() { return this.clone(); };
 	Vector2.prototype.equal = function( v ) { return v.x == this.x && v.y == this.y };
 	Vector2.prototype.abs = function() { return new Vector2( Math.abs(this.x), Math.abs(this.y)); };
 	
@@ -38,6 +41,8 @@ define(function() {
 		this.x = Math.round(Math.sin(angle) * length);
 		this.y = -Math.round(Math.cos(angle) * length);
 	};
+	
+	Vector2.prototype.toString = function () { return this.x + " / " + this.y; };
 
 	Zero = function() {
 		return new Vector2(0,0);

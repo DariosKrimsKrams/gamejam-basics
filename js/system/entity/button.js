@@ -39,15 +39,11 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/entity/text', 'system
 				return this;
 			};
 
-			Button.prototype.img = function(src, scale, pos, setPos) {
+			Button.prototype.img = function(src, scale) {
 				this.img = new ImageEntity(Zero(), src, scale);
-				if(pos !== undefined)
-					this.img.position = pos;
 				
-				if(setPos === undefined || setPos === true) {
-					this.size.x = Math.max(this.img.size.x * this.img.scale.x, this.size.x * this.scale.x);
-					this.size.y = Math.max(this.img.size.y * this.img.scale.y, this.size.y * this.scale.y);
-				}
+				this.size.x = Math.max(this.img.size.x * this.img.scale.x, this.size.x * this.scale.x);
+				this.size.y = Math.max(this.img.size.y * this.img.scale.y, this.size.y * this.scale.y);
 				
 				this.add(this.img);
 				return this;

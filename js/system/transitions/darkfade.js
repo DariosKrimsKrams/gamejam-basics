@@ -1,6 +1,8 @@
 define(['system/lib/transition'],
 		function(TransitionScene) {
 
+			var runOnFadeIn = false;
+
 			function DarkfadeTransition(toScene, duration, easing) {
 				TransitionScene.call(this, toScene, duration, easing);
 			}
@@ -18,6 +20,11 @@ define(['system/lib/transition'],
 				if(this.progress <= 0.5) {
 					ctx.drawImage(this.fromBuffer.buffer, 0, 0);
 				} else {
+					if(!this.runOnFadeIn) {
+						this.runOnFadeIn = true;
+						if(this.toScene.onFadeIn !== undefined)
+							this.toScene.onFadeIn();
+					}
 					ctx.drawImage(this.toBuffer.buffer, 0, 0);
 				}
 			}

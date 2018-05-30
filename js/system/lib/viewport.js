@@ -22,16 +22,16 @@ define(['system/lib/entity', 'system/geo/vector2', 'system/geo/rect', 'system/li
 		return new Rect(pos, pos.sum(this.visible));
 	};
 
-	ViewPort.prototype.dispatch = function(list, event, argurment) {
+	ViewPort.prototype.dispatch = function(list, event, argument) {
 		for (var i = 0; i < list.length; i++)
 			if (list[i][event]) {
 
 				if(event == 'draw' && this.getVisibleArea().collision(list[i].getRelativeArea()))
-					list[i].draw(argurment);
+					list[i].draw(argument);
 				if(event == 'update' && (this.updateHidden || this.getVisibleArea().collision(list[i].relativeArea())))
-					list[i].update(argurment);
+					list[i].update(argument);
 				else
-					list[i][event](argurment);
+					list[i][event](argument);
 			}
 	};
 

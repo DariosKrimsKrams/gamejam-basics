@@ -3,6 +3,9 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 
 			function TransitionScene(toScene, duration, easing) {
 				Scene.call(this);
+
+				if(toScene === undefined)
+					return;
 				
 				if(game.scene) {
 					this.add(this.fromScene = game.scene);
@@ -52,14 +55,13 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 			};
 			
 			TransitionScene.prototype.endTransition = function() {
-				game.scene = this.toScene;
-				//game.setScene(this.toScene);	
+				game.setScene(this.toScene);
 				this.toScene.sceneLoaded();
 			};
 			
 			TransitionScene.prototype.performTransition = function(ctx) {
 				// override in derived functions
-				ctx.drawImage(this.toBuffer.buffer, 0, 0);				
+				ctx.drawImage(this.toBuffer.buffer, 0, 0);
 			};
 						
 			TransitionScene.prototype.click = function (pos) {
@@ -72,6 +74,10 @@ define(['system/entity/scene', 'system/lib/entity', 'system/core/game', 'system/
 		
 			TransitionScene.prototype.mouseup = function (pos) {
 				this.toScene.mouseup(pos);
+			};
+		
+			TransitionScene.prototype.resize = function () {
+				this.toScene.resize();
 			};
 			
 			return TransitionScene;

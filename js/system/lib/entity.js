@@ -64,13 +64,14 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 		var scaleX = ScreenConfig.w * game.scaleInternal.x / this.size.x;
 		var scaleY = ScreenConfig.h * game.scaleInternal.y / this.size.y;
 		var max = Math.max(scaleX, scaleY);
+		var max = Math.max(scaleX, scaleY);
 
 		if(this.size.y * max >= ScreenConfig.h * game.scaleInternal.y)
 		{
 			//console.log("more X than Y -> move top");
 			var imgHeight = this.size.y * max;
 			var realHeight = ScreenConfig.h * game.scaleInternal.y;
-			this.position.y = -(imgHeight - realHeight) / 2 / game.scale.y;
+			this.position.y = -(imgHeight - realHeight) / 2 / game.sceneScale;
 			this.position.y += -game.offset.y / game.sceneScale;
 			this.position.x = -game.offset.x / game.sceneScale;
 		}
@@ -79,7 +80,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			//console.log("more Y than X -> move left");
 			var imgWidth = this.size.x * max;
 			var realWidth = ScreenConfig.w * game.scaleInternal.x;
-			this.position.x = -(imgWidth - realWidth) / 2 / game.scale.x;
+			this.position.x = -(imgWidth - realWidth) / 2 / game.sceneScale;
 			this.position.x += -game.offset.x / game.sceneScale;
 			this.position.y = -game.offset.y / game.sceneScale;
 		}
@@ -93,6 +94,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.add = function (entity) {
 		entity.setParent(this);
 		this.entities.push(entity);
+		return entity;
 	};
 
 	Entity.prototype.relativeMouse = function () {
@@ -131,16 +133,16 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 			arrayRemove(this.blocking, entity);
 	};
 
-	Entity.prototype.dispatch = function (list, event, argurment, arg2) {
+	Entity.prototype.dispatch = function (list, event, argument, arg2) {
 		for (var i = 0; i < list.length; i++)
 			if (list[i][event])
-				list[i][event](argurment, arg2);
+				list[i][event](argument, arg2);
 	};
 
-	Entity.prototype.dispatchReverse = function (list, event, argurment) {
+	Entity.prototype.dispatchReverse = function (list, event, argument) {
 		for (var i = list.length-1; i >= 0; i--)
 			if (list[i][event])
-				if(list[i][event](argurment))
+				if(list[i][event](argument))
 					return true;
 	};
 
@@ -176,8 +178,8 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.draw = function (ctx, visible) {
 		if(visible === undefined)
 			visible = true;
-	    //if (!this.visible && !game.drawingInvisible)
-	        //return;
+	    if (!this.visible)
+	        return;
 
 	    game.drawCount++;
 		ctx.save();
@@ -219,7 +221,7 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.mouseInArea = function() {
 		var posTmp = this.relativeMouse();
 		return this.getArea().inside(posTmp);
-	}
+	};
 
 	Entity.prototype.click = function (pos) {
 		pos = pos.dif(this.position);
@@ -284,8 +286,8 @@ define(['system/geo/vector2', 'system/geo/rect', 'system/core/mouse', 'game/conf
 	Entity.prototype.mouseout = function (pos) {
 		pos = pos.dif(this.position);
 
-		if (this.EntityType != "Scene" && !this.getArea().inside(pos))
-			return;
+		// if (this.EntityType != "Scene" && !this.getArea().inside(pos))
+		// 	return;
 		if (this.onMouseOut && this.onMouseOut(pos) && this.EntityType != "Scene")
 			return true;
 

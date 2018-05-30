@@ -23,17 +23,20 @@ define(['system/lib/colorconverter', 'game/config/config', 'game/config/gameplay
 						recolorVal = GameplayConfig.activePlayerIndex + 1;
 					else
 						recolorVal = 1;
-					//console.log("recolorVal " + recolorVal);
 				}
 
 				if(recolorVal >= 2) {
 					ColorConverter.init();
 					var colorCode = recolorVal == 2 ? Config.colorConvert2Red : Config.colorConvert2Green;
-					this.src = ColorConverter.doRecolorImage(this, colorCode).src;
+					if(recolorVal == 2 && (this.url == 'img/hold_goalkeeper_idle.png4' || this.url == 'img/hold_goalkeeper_jump.png4' || this.url == 'img/hold_goalkeeper_block.png4'))
+						colorCode = Config.colorConvert2RedHold;
+					ColorConverter.doRecolorImage(this, colorCode);
 				}
 
-				if( ++loaded >= total )
+				if( ++loaded >= total ) {
+					//console.log("all graphics loaded");
 					callback();
+				}
 			}
 
 			while( this.urls.length ) {
@@ -50,7 +53,7 @@ define(['system/lib/colorconverter', 'game/config/config', 'game/config/gameplay
 					//console.log("load " + url);
 					total++;
 					this[url] = new Image();
-					//this[url].url = url;
+					this[url].url = url;
 					this[url].recolorVal = recolorVal;
 					this[url].onload = complete;
 					this[url].src = url2;

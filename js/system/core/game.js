@@ -6,12 +6,12 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			window.mozRequestAnimationFrame ||
 			window.oRequestAnimationFrame ||
 			window.msRequestAnimationFrame ||
-			function( callback, element ){window.setTimeout(callback, 25);};
+			function( callback, element ){window.setTimeout(callback, 60);};
 		})();
 
 		return {
 			frames: 0,
-			fps: 25,
+			fps: 60,
 			drawCount: 0,
 			drawCountLast: 0,
 
@@ -23,44 +23,18 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 			buffer: null,
 			bufferCtx: null,
 
-			scale: new Vector2(1, 1),
 			scaleInternal: new Vector2(1, 1),
 			currentlyPortrait: false,
 			offset: new Vector2(0, 0),
 			sceneScale: 1,
-			//drawingInvisible: true,
+			timeScale: 1,
 
 			resize: function() {
-
 				if(screen.currentScaleType == ScaleType.TO_FULLSCREEN || screen.currentScaleType == ScaleType.WITH_ROTATION) {
 					this.updateScale();
+				} else if(screen.currentScaleType == ScaleType.SAME_ASPECT_RATIO) {
+					this.updateScaleForFixedAspectRatio();
 				}
-				else if(screen.currentScaleType == ScaleType.SAME_ASPECT_RATIO) {
-
-					var fw = window.innerWidth / screen.w;
-					var fh = window.innerHeight / screen.h;
-					var min = Math.min(fw, fh);
-					this.scale.x = min;
-					this.scale.y = min;
-
-					this.scaleInternal.x = min;
-					this.scaleInternal.y = min;
-
-					this.display.width = screen.w * this.scale.x;
-					this.display.height = screen.h * this.scale.y;
-					this.buffer.width = screen.w * this.scale.x;
-					this.buffer.height = screen.h * this.scale.y;
-
-					this.onUpdateScreenSizes();
-				}
-
-
-				if(screen.currentScaleType == ScaleType.WITH_ROTATION && this.currentlyPortrait) {
-					this.scale = new Vector2(1, 1);
-				} else if(screen.currentScaleType == ScaleType.TO_FULLSCREEN || screen.currentScaleType == ScaleType.WITH_ROTATION) {
-
-				}
-
 			},
 
 			init: function(scene) {
@@ -82,11 +56,12 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 					this.onUpdateScreenSizes();
 				}
 
-				var self = this;
-				if( config.debug )
-					setInterval( function() { self.updateFramerate(); }, 1000 );
-				if(screen.currentScaleType != ScaleType.NONE)
-					window.onresize = function() { self.resize(); };
+				(function(that) {
+					if(config.debug)
+						setInterval(function() { that.updateFramerate(); }, 1000);
+					if(screen.currentScaleType != ScaleType.NONE)
+						window.onresize = function() { that.resize(); };
+				}(this));
 
 				this.lastUpdate = Date.now();
 				this.loop();
@@ -101,7 +76,7 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 
 			loop: function() {
 				var now = Date.now();
-				var delta = now - this.lastUpdate;
+				var delta = (now - this.lastUpdate) * this.timeScale;
 
 				if( delta < 250 && this.scene ) {
 					this.update( delta );
@@ -125,18 +100,33 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 				this.displayCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 				this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 
-				//if(this.drawingInvisible)
 				this.scene.draw( this.bufferCtx, false );
 				this.scene.draw( this.bufferCtx );
 
 				this.displayCtx.drawImage( this.buffer, 0, 0, this.buffer.width, this.buffer.height );
 
 				if( config.debug ) {
-					fonts.frames.apply(this.displayCtx);
+					//fonts.frames.apply(this.displayCtx);
 					this.displayCtx.fillText("FPS: " + this.fps, 65, 15);
 					this.displayCtx.fillText("Draws/Sec: " + this.drawCountLast, 65, 35);
 					this.displayCtx.fillText("Draws/Frame: " + Math.round(this.drawCountLast / this.fps), 65, 55);
 				}
+			},
+
+			updateScaleForFixedAspectRatio: function() {
+				var fw = window.innerWidth / screen.w;
+				var fh = window.innerHeight / screen.h;
+				var scale = Math.min(fw, fh);
+
+				this.scaleInternal.x = scale;
+				this.scaleInternal.y = scale;
+
+				this.display.width = screen.w * scale.x;
+				this.display.height = screen.h * scale.y;
+				this.buffer.width = screen.w * scale.x;
+				this.buffer.height = screen.h * scale.y;
+
+				this.onUpdateScreenSizes();
 			},
 
 			updateScale: function() {
@@ -178,8 +168,6 @@ define(['game/config/config', 'game/config/screen', 'game/config/fonts', 'system
 					var fw = width / screen.w;
 					var fh = height / screen.h;
 					var min = Math.min(fw, fh);
-					this.scale.x = min;
-					this.scale.y = min;
 
 					this.scaleInternal.x = fw;
 					this.scaleInternal.y = fh;

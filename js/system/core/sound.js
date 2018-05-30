@@ -49,6 +49,10 @@ define(['game/config/config'], function(Config) {
 		},
 
 		add: function(url) {
+			if(typeof(iOS) == 'undefined')
+				iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+			if(iOS)
+				return;
 			this.urls.push(url);
 		},
 

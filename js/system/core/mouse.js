@@ -4,7 +4,7 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 	mouse.init = function () {
 		var self = this;
 		var gameframe = document.getElementById('gameframe');
-		var primaryTouchId = null;
+		var primaryTouchId = undefined;
 		var showCursor = false;
 
 		var getPrimaryTouch = function (touches) {
@@ -17,10 +17,9 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		};
 
 		gameframe.onmousemove = function (ev) {
-
 			var mouseX = ev.clientX;
 			var mouseY = ev.clientY;
-			var scale = 1;
+			var scale = game.sceneScale;
 
 			// check if portrait mode
 			if(game.currentlyPortrait)
@@ -30,8 +29,8 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 				scale = Math.min(game.scaleInternal.x, game.scaleInternal.y);
 			}
 
-			self.x = (mouseX - gameframe.offsetLeft ) / game.scale.x / scale;
-			self.y = (mouseY - gameframe.offsetTop ) / game.scale.y / scale;
+			self.x = (mouseX - gameframe.offsetLeft) / scale;
+			self.y = (mouseY - gameframe.offsetTop) / scale;
 
 			var result = checkCursorPointer();
 			setPointer(result);
@@ -92,11 +91,17 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		};
 
 		gameframe.onmousedown = function (ev) {
+			if(self.x == 0 && self.y == 0)
+				this.onmousemove(ev);
+
 			if (game.scene.mousedown)
 				game.scene.mousedown(self);
 		};
 
 		gameframe.onmouseup = function (ev) {
+			if(self.x == 0 && self.y == 0)
+				this.onmousemove(ev);
+
 			if (game.scene.mouseup)
 				game.scene.mouseup(self);
 		};
@@ -104,7 +109,9 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 		/* Support for mobile devices */
 		gameframe.ontouchstart = function (ev) {
 			ev.preventDefault();
-			if (primaryTouchId != null) return;
+
+			if (primaryTouchId != undefined)
+				return;
 
 			this.onmousemove(ev.touches[0]);
 			this.onmousedown(ev.touches[0]);
@@ -115,19 +122,22 @@ define(['system/geo/vector2', 'system/core/game', 'game/config/config', 'system/
 			var touch = getPrimaryTouch(ev.touches);
 			ev.preventDefault();
 
-			if (touch == null) return;
+			if (touch == null)
+				return;
+
 			this.onmousemove(touch);
 		};
 
 		gameframe.ontouchend = function (ev) {
 			var touch = getPrimaryTouch(ev.changedTouches);
 			ev.preventDefault();
-			if (touch == null) return;
+
+			if (touch == null)
+				return;
 
 			this.onmouseup(touch);
 			this.onclick(touch);
-			primaryTouchId = null;
-
+			primaryTouchId = undefined;
 			self.x = -1;
 			self.y = -1;
 		};

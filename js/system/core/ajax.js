@@ -25,7 +25,8 @@ define(function() {
       				if (xmlHttp.status >= 200 && xmlHttp.status < 300) {
 						callback(xmlHttp.responseText);
 					} else if(callbackError !== undefined) {
-						callbackError();
+						//res = xmlHttp.responseText;
+						callbackError(xmlHttp);
 					}
 				});
 

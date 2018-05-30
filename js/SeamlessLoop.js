@@ -1,45 +1,3 @@
-/**
- * SeamlessLoop.js 2.0 - Reproduces seamless loops on HTML5/Javascript
- * https://github.com/Hivenfour/SeamlessLoop
- * 
- * Copyright (c) 2012 Main Software,
- * Written by Darío Tejedor Rico. Contact mail: hivenfour@gmail.com
- * The source code is freely distributable under the terms of LGPL license.
- * License details at http://www.gnu.org/licenses/lgpl-3.0.txt
- * 
- * USAGE:
- * - Create the Seamlessloop object
- * 		var loop = new SeamlessLoop();
- * 
- * - Add as many sounds as you will use, providing duration in miliseconds
- * (sounds must be pre-loaded if you want to update the loop without gaps)
- * 		loop.addUri(uri, length, "sound1");
- * 		loop.addUri(uri, length, "sound2");
- * ...
- * 
- * - Establish your callback function that will be called when all sounds are pre-loaded
- * 		loop.callback(soundsLoaded);
- * 
- * - Start reproducing the seamless loop:
- * 		function soundsLoaded() {
- * 			var n = 1;
- * 			loop.start("sound" + n);
- * 		};
- * 
- * - Update the looping sound, you can do this
- * synchronously (waiting the loop to finish)
- * or asynchronously (change sound immediately):
- * 		n++;
- * 		loop.update("sound" + n, false);
- * 
- * - Modify the seamless loop volume:
- * 		loop.volume(0.5);
- * 		loop.volume(loop.volume() + 0.1);
- * 
- * - Stop the seamless loop:
- * 		loop.stop();
- */
-
 function SeamlessLoop() {
 	this.is = {
 			  ff: Boolean(!(window.mozInnerScreenX == null) && /firefox/.test( navigator.userAgent.toLowerCase() )),
@@ -48,11 +6,6 @@ function SeamlessLoop() {
 			  chrome: Boolean(window.chrome),
 			  safari: Boolean(!window.chrome && /safari/.test( navigator.userAgent.toLowerCase() ) && window.getComputedStyle && !window.globalStorage && !window.opera)
 			};
-	//console.debug("ff: " + this.is.ff);
-	//console.debug("ie: " + this.is.ie);
-	//console.debug("opera: " + this.is.opera);
-	//console.debug("chrome: " + this.is.chrome);
-	//console.debug("safari: " + this.is.safari);
 	this._total = 0;
 	this._load = 0;
 	this.cb_loaded;
@@ -66,13 +19,13 @@ function SeamlessLoop() {
 	if(this.is.ff) this.stopDelay = 85;
 	if(this.is.opera) this.playDelay = 5;
 	if(this.is.opera) this.stopDelay = 0;
-	//console.debug(this.playDelay + ", " + this.stopDelay);
 	this.next = 1;
 	this.audios = new Array();
 	this.actual = new Array();
 	this.dropOld = new Boolean();
 	this.old;
 	this._volume = 1;
+	this.onError = undefined;
 	
 	var t = this;
 	this._eventCanplaythrough = function(audBool) {
@@ -123,7 +76,25 @@ function SeamlessLoop() {
 		
 		if(this.is.opera) this.actual[antikey].pause();
 		
-		this.actual[key].play();
+		var s = this.actual[key];
+		if(s !== undefined) {
+			try {
+				const playPromise = s.play();
+				if (playPromise !== null) {
+					playPromise.catch(() => {
+						// console.log(e);
+						console.log(this);
+						if(this.onError !== undefined)
+							this.onError();
+					})
+				}
+			} catch(e) {
+				console.log(e);
+				if(this.onError !== undefined)
+					this.onError();
+			}
+
+		}
 		this.next *= -1;
 	};
 	
@@ -140,9 +111,9 @@ SeamlessLoop.prototype.start = function(id) {
 };
 
 SeamlessLoop.prototype.volume = function(vol) {
-	if(typeof vol != "undefined") {
-		this.actual._1.volume = vol;
-        	this.actual._2.volume = vol;
+	if(typeof vol != "undefined" && this.timeout) {
+		this.audios.sound1._1.volume = vol;
+		this.audios.sound1._2.volume = vol;
 		this._volume = vol;
 	}
 	
@@ -150,6 +121,9 @@ SeamlessLoop.prototype.volume = function(vol) {
 };
 
 SeamlessLoop.prototype.stop = function() {
+	if(!this.timeout) {
+		return;
+	}
 	clearTimeout(this.timeout);
 	this.actual._1.currentTime = 0;
 	this.actual._1.pause();

@@ -1,5 +1,5 @@
 var onTileMapLoaded;
-var TileMaps = []; // TODO outcomment this if using a custom map.js
+var TileMaps = []; // outcomment this if using a custom map.js
 
 define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 		function(Entity, graphics, Vector2) {
@@ -165,7 +165,6 @@ define(['system/lib/entity', 'system/core/graphic', 'system/geo/vector2'],
 				return null;
 			};
 
-			// TODO: add support for object layers
 			return TiledMap;
 		}
 );

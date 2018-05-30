@@ -38,8 +38,14 @@ define(['system/core/graphic', 'system/core/game'],
 				image.onload = null;
 				image.src = this.canvas.toDataURL("image/png");
 
+				// set width and height because of async image-loading same time while initializing of all scenes and entities  -> for iOS devices
+				image.width = this.canvas.width;
+				image.height = this.canvas.height;
+
+				//console.log(image.src);
+
 				// return
-				return image;
+				//return image;
 
 			},
 
