@@ -1,8 +1,6 @@
 # ![HTML5 Basics](http://www.game-codi.ng/media/html5-basics/html5_basics.png)
 
-> [game-coding.com](http://game-codi.ng)
-
-"Gamejam Basics" is a lightweight js framework for developing simple HTML5 games. An alternative to this project is for example PixiJS that is more powerful.
+Gamejam Basics" is a lightweight js framework for developing simple HTML5 games. An alternative to this project is for example PixiJS that is more powerful.
 
 ## Features:
 
